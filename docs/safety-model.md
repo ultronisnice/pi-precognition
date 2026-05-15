@@ -1,6 +1,6 @@
 # Safety Model
 
-`pi-precognition` is a latency primitive that warms validated tool-result futures during draft and idle time, then serves them through the normal Pi tool path only when the model **explicitly asks** for the matching tool **and** the workspace state still validates.
+`pi-precognition` is a latency primitive that warms validated tool-result futures during draft and idle time, then serves them through wrapped Pi-compatible tools (same model-facing schemas as Pi's built-ins) only when the model **explicitly asks** for the matching tool **and** the workspace state still validates.
 
 This document lists the safety invariants the package enforces, the threats it considers, and the limits operators should know about before deploying it.
 
@@ -23,7 +23,7 @@ Every served future re-validates at serve-time:
 - **Bash command futures (fingerprinted classes)**: re-collect causal files (`package.json`, `tsconfig`, source tree, test files) and compare sha1+size+mtime against the snapshot taken at warm time. Reject on any drift.
 - **Bash command futures (unfingerprinted classes)** (`git status`, `ls`, `cat`): TTL-only, default 2 seconds.
 
-If validation fails, the future is dropped and Pi falls through to the normal tool path. Stale futures are never served.
+If validation fails, the future is dropped and the wrapper's safe fallback runs the real command (with the same repo-containment and secret-denylist guards applied to warmed candidates). Stale futures are never served.
 
 ### I5. Repo-local only
 All warmed paths must:
@@ -53,7 +53,7 @@ Maximum warm file size is 24 KB by default (`PI_PRECOG_MAX_FILE_BYTES`). Larger 
 Files containing a `\0` byte in the first read pass are skipped.
 
 ### I10. Hard off switch
-`PI_PRECOG=0` disables everything. The package becomes a no-op extension; no warming, no caching, no overrides. The model uses normal Pi tools end-to-end.
+`PI_PRECOG=0` disables everything. The package becomes a no-op extension; no warming, no caching, no tool overrides. The model uses Pi's built-in tools end-to-end with no precognition involvement.
 
 ## Threat model
 
@@ -87,7 +87,7 @@ The command-future cache only serves commands whose canonical form matches one o
 | `bash:cat package.json` | `cat package.json` | none (TTL ≤ 2s) |
 | `bash:ls` | `ls`, `ls -la`, `ls src`, `ls -la src` | none (TTL ≤ 2s) |
 
-Any bash command outside this list misses the cache and runs through Pi's normal tool path.
+Any bash command outside this list misses the cache and runs through the wrapper's safe fallback path (which uses the same repo-containment + secret-denylist guards as warmed candidates).
 
 ## Mutation-intent suppression
 
@@ -126,7 +126,7 @@ Tunables:
 | `cache-index` | Keys but not contents. | Economical context budget |
 | `full` | Warmed file contents injected as a hidden custom message. | Bench/research only |
 
-`silent-futures` is what every public number is measured against.
+`silent-futures` is the default and what every **headline** number is measured against (the 522× slow-command result and the 5.82× first-tool-result). The broader 15-paired mixed A/B referenced in the benchmarks doc was run with `full` injection mode and is labeled as historical/diagnostic context, not production-default evidence.
 
 ## Known limitations
 

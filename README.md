@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" alt="pi-precognition headline: a 15-second npm test served in 29ms through normal Pi tools" width="100%">
+  <img src="docs/demo.gif" alt="pi-precognition headline: a 15-second npm test served in 29ms through wrapped Pi-compatible tools" width="100%">
 </p>
 
 ---
@@ -72,7 +72,7 @@ PI_PRECOG=0
 2. **Extracts evidence**: path mentions, changed-file correlations, intent tags.
 3. **Background-warms** safe repo-local file reads, filtered `git status`/`git diff`, bounded literal `rg` probes, and an allowlisted set of `bash` command futures (`npm test`, `npm run typecheck`, `npm run lint`, `vitest`, `jest`, `pytest`, `git status`, `git log`, `cat package.json`, `ls`) — each with a class-specific causal fingerprint.
 4. **At `before_agent_start`** in `silent-futures` mode: nothing visible. The model sees the normal tool surface.
-5. **When the model asks for a tool**: re-validate the causal fingerprint. If it still matches, serve the warmed result through the normal Pi tool path. Otherwise miss safely and Pi falls through to the real tool.
+5. **When the model asks for a tool**: re-validate the causal fingerprint. If it still matches, serve the warmed result through the wrapped Pi-compatible tool (same model-facing schema as Pi's built-in). Otherwise miss safely and fall through to the wrapper's safe fallback implementation (repo-containment + secret denylist enforced).
 
 The primitive is one sentence:
 
@@ -92,7 +92,7 @@ flowchart LR
     H["model"] -.->|"calls tool"| G
     G --> I{"causal fingerprint validates?"}
     I -->|"yes"| J["return warmed result (≈0 wait)"]
-    I -->|"no"| K["fall through to real Pi tool"]
+    I -->|"no"| K["fall through to wrapper's safe fallback"]
     J --> H
     K --> H
 ```
@@ -176,7 +176,7 @@ Issues and PRs welcome.
 
 PASTE and Speculative Actions (2025) speculatively *execute* likely tool calls. If the prediction is wrong, the side effect already happened — and for mutating tools that's a real risk.
 
-`pi-precognition` only ever **caches results** the model explicitly requests. A wrong prediction is wasted I/O during operator typing — never a wrong action. The model retains full agency. The wait disappears.
+`pi-precognition` only ever **serves** cached results *after* the model explicitly requests the matching tool. Warming happens during operator typing; serving happens only on explicit request, gated by causal-fingerprint validation. A wrong warm guess is wasted I/O during draft time — never a wrong action. The model retains full agency. The wait disappears.
 
 ## License
 

@@ -32,7 +32,9 @@ The strongest signal: a workload where `npm test` takes 15 seconds and the draft
 - It is not "general-purpose 522× faster agents." It is the upper bound on a single workload shape (long-command + sufficient draft budget).
 - It is n=3. Strong directionally; not yet 20-run-with-CI shipped.
 
-## Broader: 15-paired live A/B across 5 workloads
+## Broader: 15-paired live A/B across 5 workloads (historical, `full` injection mode)
+
+**Note:** this run used `PI_PRECOG_INJECTION_MODE=full` and is presented for historical / diagnostic context, NOT as production-default evidence. Headline numbers (the 522× / 5.82× / 3.32× table above) were measured against the production-default `silent-futures` mode.
 
 Across a mixed workload set (bugfix, failing-test, review, refactor, low-signal chat):
 
@@ -120,7 +122,7 @@ The exact harness used to produce live numbers is `scripts/ultron-live-ab.mjs` i
 
 | System | Speedup | Mechanism | How we differ |
 |---|---|---|---|
-| PASTE (arXiv:2603.18897) | 48.5% task time, 1.8× throughput | Speculatively execute likely next tool while model reasons | We never execute speculative tool calls; we cache results the model explicitly requests |
+| PASTE (arXiv:2603.18897) | 48.5% task time, 1.8× throughput | Speculatively execute likely next tool while model reasons | We precompute bounded read-only futures during draft time, but never speculate mutating actions or assistant answers; served results require an explicit model tool call and pass causal-fingerprint validation |
 | Speculative Actions (2025) | 20% latency, 55% next-action accuracy | Predict next action | Action-level prediction; we are result-level caching |
 | SpecCache (2025) | 3.2× web-env overhead reduction | Cache web environment results | Web agents; we cover repo workflows |
 | SPAgent (2025) | 1.65× end-to-end | Search-agent caching | Domain-specific |
