@@ -1,0 +1,70 @@
+{
+  "name": "pi-precognition",
+  "version": "0.1.0",
+  "description": "Predict the wait, not the answer. A Pi-native latency primitive that turns predictable agent tool waits into verified causal futures. 522x lower blocked tool wait on slow-command workloads.",
+  "author": {
+    "name": "ULTRXN",
+    "url": "https://github.com/ultronisnice"
+  },
+  "homepage": "https://github.com/ultronisnice/pi-precognition#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ultronisnice/pi-precognition.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ultronisnice/pi-precognition/issues"
+  },
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "pi-coding-agent",
+    "agent",
+    "agent-latency",
+    "agent-tools",
+    "ai-agent",
+    "causal-futures",
+    "speculative-execution",
+    "speculative-tool-execution",
+    "precognition",
+    "zeroturn",
+    "tool-cache",
+    "latency",
+    "claude-code",
+    "developer-tools"
+  ],
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ],
+    "video": "https://raw.githubusercontent.com/ultronisnice/pi-precognition/main/docs/demo.mp4",
+    "image": "https://raw.githubusercontent.com/ultronisnice/pi-precognition/main/docs/demo-preview.png"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "demo": "bash docs/demo.sh"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "dependencies": {
+    "typebox": "^1.0.58"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "files": [
+    "src",
+    "tests",
+    "docs/safety-model.md",
+    "docs/demo.gif",
+    "docs/demo.mp4",
+    "docs/demo-preview.png",
+    "docs/demo.sh",
+    "README.md",
+    "LICENSE",
+    "tsconfig.json"
+  ]
+}
