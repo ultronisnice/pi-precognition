@@ -1,11 +1,8 @@
 {
   "name": "pi-precognition",
-  "version": "0.1.0",
-  "description": "Predict the wait, not the answer. A Pi-native latency primitive that turns predictable agent tool waits into verified causal futures. 522x lower blocked tool wait on slow-command workloads.",
-  "author": {
-    "name": "ULTRXN",
-    "url": "https://github.com/ultronisnice"
-  },
+  "version": "0.2.0",
+  "description": "Validated tool futures for low-latency Pi coding agents. Predict the wait, not the answer.",
+  "author": "pi-precognition contributors",
   "homepage": "https://github.com/ultronisnice/pi-precognition#readme",
   "repository": {
     "type": "git",
@@ -20,18 +17,17 @@
     "pi-package",
     "pi-extension",
     "pi-coding-agent",
-    "agent",
+    "ai-agent",
+    "coding-agent",
     "agent-latency",
     "agent-tools",
-    "ai-agent",
-    "causal-futures",
     "speculative-execution",
     "speculative-tool-execution",
-    "precognition",
-    "zeroturn",
     "tool-cache",
-    "latency",
-    "claude-code",
+    "validated-futures",
+    "causal-futures",
+    "precognition",
+    "typescript",
     "developer-tools"
   ],
   "pi": {
@@ -53,12 +49,15 @@
     "typebox": "^1.0.58"
   },
   "devDependencies": {
+    "@earendil-works/pi-coding-agent": "^0.74.0",
     "typescript": "^6.0.3"
   },
   "files": [
     "src",
+    "extensions",
     "tests",
     "docs/safety-model.md",
+    "docs/benchmarks.md",
     "docs/demo.gif",
     "docs/demo.mp4",
     "docs/demo-preview.png",

@@ -57,6 +57,13 @@ export interface GhostToolResult {
 	fileMtimeMs?: number;
 	fileSize?: number;
 	causalFiles?: Array<{ path: string; mtimeMs: number; size: number; sha1: string }>;
+	/**
+	 * Phase 2: chain depth at which this future was warmed.
+	 * 1 = warmed from an explicit draft reference (or first-tool match).
+	 * 2 = warmed by following local imports of a depth-1 file.
+	 * Higher depths reserved for pi-cascade's intra-turn speculation.
+	 */
+	chainDepth?: number;
 }
 
 export interface PrecogState {
@@ -114,6 +121,222 @@ const COMMAND_TAGS: ReadonlyArray<readonly [string, RegExp]> = Object.freeze([
 	["docs", /\b(readme|docs|document|paper|arxiv|writeup)\b/i],
 ]);
 
+/**
+ * COMMAND_CLASSES: the universal bash cache registry.
+ *
+ * Each class declares:
+ *   - canonical cache key (e.g. "bash:npm test")
+ *   - one or more bash-command regex patterns the model might emit
+ *   - the intent tag(s) that should trigger draft-time warming
+ *   - argv form for execFile to actually run the command
+ *   - causal path filter — which repo files invalidate the future
+ *
+ * isFingerprinted=false means the future is short-TTL with no causal hash;
+ * it relies on a fresh re-run for re-validation (used for fast read-only
+ * git status/diff/log probes).
+ */
+interface CommandClass {
+	key: string;
+	label: string;
+	patterns: RegExp[];
+	intentTags: string[];
+	runArgv: [string, string[]];
+	timeoutMs?: number;
+	isFingerprinted: boolean;
+	causalFilter?: (paths: string[]) => string[];
+	precondition?: (cwd: string, packageText: string | undefined) => boolean;
+}
+
+const NPM_TEST_CAUSAL = (paths: string[]): string[] => paths.filter((p) =>
+	/^(package(?:-lock)?\.json|npm-shrinkwrap\.json|pnpm-lock\.yaml|yarn\.lock|src\/.*|test\/.*|tests\/.*|__tests__\/.*|test\.[cm]?[jt]s|.*\.(?:test|spec)\.[cm]?[jt]sx?)$/i.test(p),
+);
+const TYPECHECK_CAUSAL = (paths: string[]): string[] => paths.filter((p) =>
+	/^(package(?:-lock)?\.json|tsconfig(?:\.[^./]+)?\.json|.*\.(ts|tsx|d\.ts|cts|mts)$)/i.test(p),
+);
+const LINT_CAUSAL = (paths: string[]): string[] => paths.filter((p) =>
+	/^(package(?:-lock)?\.json|\.eslintrc(?:\.[^./]+)?|eslint\.config\.[cm]?js|biome\.json|\.prettierrc(?:\.[^./]+)?|src\/.*|test\/.*|tests\/.*)$/i.test(p)
+	&& /\.(ts|tsx|js|jsx|mjs|cjs|json|md)$|^(\.eslintrc|eslint\.config|biome\.json|\.prettierrc|package(?:-lock)?\.json|tsconfig)/.test(p),
+);
+const PYTEST_CAUSAL = (paths: string[]): string[] => paths.filter((p) =>
+	/^(pyproject\.toml|setup\.cfg|pytest\.ini|conftest\.py|tox\.ini|.*\.py)$/i.test(p),
+);
+const BUILD_CAUSAL = (paths: string[]): string[] => paths.filter((p) =>
+	/^(package(?:-lock)?\.json|tsconfig(?:\.[^./]+)?\.json|vite\.config\.[cm]?[jt]s|rollup\.config\.[cm]?[jt]s|esbuild\.config\.[cm]?[jt]s|webpack\.config\.[cm]?[jt]s|src\/.*)$/i.test(p),
+);
+
+const COMMAND_CLASSES: ReadonlyArray<CommandClass> = Object.freeze([
+	{
+		key: "bash:npm test",
+		label: "npm test",
+		patterns: [
+			/^npm (?:run )?test(?: --(?: --silent|silent))?$/,
+			/^npm (?:run )?test 2>&1 \| tail -\d+$/,
+		],
+		intentTags: ["test"],
+		runArgv: ["npm", ["test", "--", "--silent"]],
+		isFingerprinted: true,
+		causalFilter: NPM_TEST_CAUSAL,
+		precondition: (_cwd, pkg) => Boolean(pkg && /"test"\s*:/.test(pkg)),
+	},
+	{
+		key: "bash:npm typecheck",
+		label: "npm run typecheck",
+		patterns: [
+			/^npm (?:run )?(?:typecheck|tsc)(?: --(?: --silent|silent))?$/,
+			/^tsc(?: -p [^\s]+)?(?: --noEmit)?$/,
+			/^npx tsc(?: -p [^\s]+)?(?: --noEmit)?$/,
+		],
+		intentTags: ["build"],
+		runArgv: ["npm", ["run", "typecheck", "--silent"]],
+		isFingerprinted: true,
+		causalFilter: TYPECHECK_CAUSAL,
+		precondition: (_cwd, pkg) => Boolean(pkg && /"typecheck"\s*:/.test(pkg)),
+	},
+	{
+		key: "bash:npm lint",
+		label: "npm run lint",
+		patterns: [
+			/^npm (?:run )?lint(?: --(?: --silent|silent))?$/,
+			/^npx eslint \.$/,
+			/^npx eslint src$/,
+		],
+		intentTags: ["build"],
+		runArgv: ["npm", ["run", "lint", "--silent"]],
+		isFingerprinted: true,
+		causalFilter: LINT_CAUSAL,
+		precondition: (_cwd, pkg) => Boolean(pkg && /"lint"\s*:/.test(pkg)),
+	},
+	{
+		key: "bash:vitest",
+		label: "vitest run",
+		patterns: [
+			/^npx vitest(?: run)?$/,
+			/^npm (?:run )?test:vitest$/,
+			/^vitest(?: run)?$/,
+		],
+		intentTags: ["test"],
+		runArgv: ["npx", ["vitest", "run", "--reporter=basic"]],
+		isFingerprinted: true,
+		causalFilter: NPM_TEST_CAUSAL,
+		precondition: (_cwd, pkg) => Boolean(pkg && /"vitest"\s*:/.test(pkg)),
+	},
+	{
+		key: "bash:jest",
+		label: "jest",
+		patterns: [/^npx jest$/, /^jest$/, /^npm (?:run )?test:jest$/],
+		intentTags: ["test"],
+		runArgv: ["npx", ["jest", "--silent"]],
+		isFingerprinted: true,
+		causalFilter: NPM_TEST_CAUSAL,
+		precondition: (_cwd, pkg) => Boolean(pkg && /"jest"\s*:/.test(pkg)),
+	},
+	{
+		key: "bash:pytest",
+		label: "pytest -q",
+		patterns: [/^pytest(?: -q)?$/, /^python -m pytest(?: -q)?$/],
+		intentTags: ["test"],
+		runArgv: ["pytest", ["-q"]],
+		isFingerprinted: true,
+		causalFilter: PYTEST_CAUSAL,
+	},
+	{
+		key: "bash:npm build",
+		label: "npm run build",
+		patterns: [/^npm (?:run )?build(?: --(?: --silent|silent))?$/, /^npx tsc -b$/],
+		intentTags: ["build"],
+		runArgv: ["npm", ["run", "build", "--silent"]],
+		isFingerprinted: true,
+		causalFilter: BUILD_CAUSAL,
+		precondition: (_cwd, pkg) => Boolean(pkg && /"build"\s*:/.test(pkg)),
+	},
+	{
+		// Fast read-only git probes: no causal fingerprint, short TTL.
+		key: "bash:git status",
+		label: "git status",
+		patterns: [/^git status$/, /^git status --short$/, /^git status -s$/],
+		intentTags: ["review", "debug"],
+		runArgv: ["git", ["status", "--short"]],
+		isFingerprinted: false,
+		timeoutMs: 800,
+	},
+	{
+		key: "bash:git diff",
+		label: "git diff",
+		patterns: [/^git diff$/, /^git diff --name-only$/, /^git diff --stat$/],
+		intentTags: ["review", "debug"],
+		runArgv: ["git", ["diff", "--stat"]],
+		isFingerprinted: false,
+		timeoutMs: 800,
+	},
+	{
+		key: "bash:git log",
+		label: "git log -n 10",
+		patterns: [/^git log(?: --oneline)?(?: -n? ?\d{1,3})?$/, /^git log -\d{1,2}$/],
+		intentTags: ["review", "debug"],
+		runArgv: ["git", ["log", "--oneline", "-n", "10"]],
+		isFingerprinted: false,
+		timeoutMs: 800,
+	},
+	{
+		key: "bash:cat package.json",
+		label: "cat package.json",
+		patterns: [/^cat package\.json$/],
+		intentTags: ["review", "build"],
+		runArgv: ["cat", ["package.json"]],
+		isFingerprinted: false,
+		timeoutMs: 200,
+	},
+	{
+		key: "bash:ls",
+		label: "ls",
+		patterns: [/^ls$/, /^ls -la?$/, /^ls -la$/, /^ls src$/, /^ls -la? src$/],
+		intentTags: ["review", "debug"],
+		runArgv: ["ls", ["-la"]],
+		isFingerprinted: false,
+		timeoutMs: 200,
+	},
+	// Legacy hidden-context git ghost keys (produced by warmGhostTools via
+	// pushGitGhost). They route on the bare "--short" / "--name-only" forms
+	// directly via normalizeBashCacheCommand's early returns, so their
+	// patterns here just need to round-trip via commandClassByKey for the
+	// validity check.
+	{
+		key: "git_status_short:status --short",
+		label: "git status --short",
+		patterns: [/^git status --short$/, /^git status -s$/],
+		intentTags: ["review", "debug"],
+		runArgv: ["git", ["status", "--short"]],
+		isFingerprinted: false,
+		timeoutMs: 800,
+	},
+	{
+		key: "git_diff_name_only:diff --name-only",
+		label: "git diff --name-only",
+		patterns: [/^git diff --name-only$/],
+		intentTags: ["review", "debug"],
+		runArgv: ["git", ["diff", "--name-only"]],
+		isFingerprinted: false,
+		timeoutMs: 800,
+	},
+]);
+
+export function findCommandClass(command: string): CommandClass | undefined {
+	const normalized = command.trim().replace(/\s+/g, " ");
+	for (const cls of COMMAND_CLASSES) {
+		if (cls.patterns.some((re) => re.test(normalized))) return cls;
+	}
+	return undefined;
+}
+
+export function commandClassByKey(key: string): CommandClass | undefined {
+	return COMMAND_CLASSES.find((cls) => cls.key === key);
+}
+
+/** Read-only access for tests and downstream packages. */
+export function listCommandClasses(): ReadonlyArray<{ key: string; label: string; intentTags: string[]; isFingerprinted: boolean }> {
+	return COMMAND_CLASSES.map((c) => ({ key: c.key, label: c.label, intentTags: [...c.intentTags], isFingerprinted: c.isFingerprinted }));
+}
+
 const DECISION_WORDS = /\b(should|must|recommend|choose|route|decide|best|always|never|use this|do this)\b/i;
 
 export function createPrecogState(config: Partial<PrecogConfig> = {}): PrecogState {
@@ -158,6 +381,7 @@ export function resetPrecogSessionState(state: PrecogState, cwd = ""): void {
 	state.warmedFiles = [];
 	state.ghostTools = [];
 	state.pendingGhostTools.clear();
+
 	state.snapshot = {
 		cwd,
 		changedFiles: [],
@@ -518,8 +742,9 @@ export async function warmGhostTools(
 	evidence: PrecogEvidence | undefined = state.evidence,
 ): Promise<GhostToolResult[]> {
 	if (!evidence || evidence.confidence < 0.25) {
-		state.ghostTools = [];
-		return [];
+		// Don't clobber the lattice-driven / cross-turn-primer warms.
+		// Just no-op when local evidence is too weak.
+		return state.ghostTools;
 	}
 
 	const started = performance.now();
@@ -544,17 +769,24 @@ export async function warmGhostTools(
 			collectedAt: Date.now(),
 			fileMtimeMs: file.mtimeMs,
 			fileSize: file.size,
+			chainDepth: 1,
 		});
 		causalCandidates.push(...extractLocalImportRefs(file.relative, file.text));
 	}
 
+	// chain-depth-2 — walk local imports of every depth-1 file
+	// and warm those too, bounded by MAX_GHOST_TOOLS.
+	const CHAIN_DEPTH_2_BUDGET = Number(process.env.PI_PRECOG_CHAIN_DEPTH_2_BUDGET ?? 4);
+	let chainHopsRemaining = CHAIN_DEPTH_2_BUDGET;
 	for (const candidate of stableUnique(causalCandidates)) {
 		if (tools.length >= MAX_GHOST_TOOLS) break;
+		if (chainHopsRemaining <= 0) break;
 		const file = await readSafeRepoText(cwd, candidate);
 		if (!file) continue;
 		const key = `read:${file.relative}`;
 		if (seen.has(key)) continue;
 		seen.add(key);
+		chainHopsRemaining -= 1;
 		tools.push({
 			name: "read",
 			key,
@@ -565,16 +797,26 @@ export async function warmGhostTools(
 			collectedAt: Date.now(),
 			fileMtimeMs: file.mtimeMs,
 			fileSize: file.size,
+			chainDepth: 2,
 		});
 	}
 
 	await pushGitGhost(tools, seen, cwd, "git_status_short", ["status", "--short"]);
 	await pushGitGhost(tools, seen, cwd, "git_diff_name_only", ["diff", "--name-only"]);
-	if (commandFuturesEnabled() && evidence.intentTags.includes("test")) {
-		const npmTest = await ensureNpmTestGhost(state, cwd);
-		if (npmTest && tools.length < MAX_GHOST_TOOLS && !seen.has(npmTest.key)) {
-			seen.add(npmTest.key);
-			tools.push(npmTest);
+	if (commandFuturesEnabled()) {
+		// The cache-delay mechanism (src/cache-delay.ts) handles the
+		// "cheap diagnostic seduction" problem by shaping the served
+		// latency to match cold-tool latency. No content-aware suppression
+		// needed — the model sees a uniform latency distribution.
+		for (const cls of COMMAND_CLASSES) {
+			if (tools.length >= MAX_GHOST_TOOLS) break;
+			if (seen.has(cls.key)) continue;
+			if (!cls.intentTags.some((tag) => evidence.intentTags.includes(tag))) continue;
+			const future = await ensureCommandGhost(state, cwd, cls.key);
+			if (future && !seen.has(future.key)) {
+				seen.add(future.key);
+				tools.push(future);
+			}
 		}
 	}
 
@@ -582,7 +824,10 @@ export async function warmGhostTools(
 	if (literal) await pushRgGhost(tools, seen, cwd, literal);
 
 	const elapsed = performance.now() - started;
-	state.ghostTools = tools.slice(0, MAX_GHOST_TOOLS);
+	// Merge with existing ghostTools (e.g. from lattice prime) instead of clobbering.
+	const existingKeys = new Set(state.ghostTools.map((t) => t.key));
+	const additions = tools.filter((t) => !existingKeys.has(t.key));
+	state.ghostTools = [...state.ghostTools, ...additions].slice(0, MAX_GHOST_TOOLS);
 	state.stats.ghostToolWarms += 1;
 	state.stats.lastGhostToolMs = elapsed;
 	state.stats.maxGhostToolMs = Math.max(state.stats.maxGhostToolMs, elapsed);
@@ -712,52 +957,66 @@ async function pushRgGhost(tools: GhostToolResult[], seen: Set<string>, cwd: str
 }
 
 function ensureNpmTestGhost(state: PrecogState, cwd: string): Promise<GhostToolResult | undefined> {
-	const key = "bash:npm test";
-	const pending = state.pendingGhostTools.get(key);
+	return ensureCommandGhost(state, cwd, "bash:npm test");
+}
+
+export function ensureCommandGhost(state: PrecogState, cwd: string, classKey: string): Promise<GhostToolResult | undefined> {
+	const cls = commandClassByKey(classKey);
+	if (!cls) return Promise.resolve(undefined);
+	const pending = state.pendingGhostTools.get(cls.key);
 	if (pending) return pending;
-	const future = collectNpmTestGhost(cwd).finally(() => {
-		state.pendingGhostTools.delete(key);
+	const future = collectCommandGhost(cwd, cls).finally(() => {
+		state.pendingGhostTools.delete(cls.key);
 	});
-	state.pendingGhostTools.set(key, future);
+	state.pendingGhostTools.set(cls.key, future);
 	return future;
 }
 
-async function collectNpmTestGhost(cwd: string): Promise<GhostToolResult | undefined> {
-	const key = "bash:npm test";
+async function collectCommandGhost(cwd: string, cls: CommandClass): Promise<GhostToolResult | undefined> {
 	try {
-		const packageFile = await readSafeRepoText(cwd, "package.json");
-		if (!packageFile || !/"test"\s*:/.test(packageFile.text)) return undefined;
-		const causalFiles = await collectCommandCausalFiles(cwd);
-		if (causalFiles.length === 0) return undefined;
-		const { stdout, stderr } = await execFileAsync("npm", ["test", "--", "--silent"], {
+		const packageFile = await readSafeRepoText(cwd, "package.json").catch(() => undefined);
+		if (cls.precondition && !cls.precondition(cwd, packageFile?.text)) return undefined;
+
+		let causalFiles: Array<{ path: string; mtimeMs: number; size: number; sha1: string }> = [];
+		if (cls.isFingerprinted) {
+			causalFiles = await collectCommandCausalFiles(cwd, cls.causalFilter);
+			if (causalFiles.length === 0) return undefined;
+		}
+		const [bin, args] = cls.runArgv;
+		const { stdout, stderr } = await execFileAsync(bin, args, {
 			cwd,
-			timeout: Number(process.env.PI_PRECOG_COMMAND_TIMEOUT_MS ?? 8_000),
+			timeout: cls.timeoutMs ?? Number(process.env.PI_PRECOG_COMMAND_TIMEOUT_MS ?? 8_000),
 			maxBuffer: 128 * 1024,
 			env: { ...process.env, NO_COLOR: "1" },
 		});
-		if (!sameCausalFiles(causalFiles, await collectCommandCausalFiles(cwd))) return undefined;
+		if (cls.isFingerprinted) {
+			if (!sameCausalFiles(causalFiles, await collectCommandCausalFiles(cwd, cls.causalFilter))) return undefined;
+		}
 		const content = clampText(`${stdout}${stderr}`.trim() || "(no output)", MAX_GHOST_RESULT_CHARS);
 		return {
 			name: "bash_command",
-			key,
-			args: ["npm test"],
+			key: cls.key,
+			args: [cls.label],
 			content,
 			bytes: Buffer.byteLength(content),
 			collectedAt: Date.now(),
-			causalFiles,
+			causalFiles: cls.isFingerprinted ? causalFiles : undefined,
 		};
 	} catch (err: any) {
-		const causalFiles = await collectCommandCausalFiles(cwd).catch(() => []);
-		if (causalFiles.length === 0) return undefined;
+		let causalFiles: Array<{ path: string; mtimeMs: number; size: number; sha1: string }> = [];
+		if (cls.isFingerprinted) {
+			causalFiles = await collectCommandCausalFiles(cwd, cls.causalFilter).catch(() => []);
+			if (causalFiles.length === 0) return undefined;
+		}
 		const content = clampText(`${err?.stdout ?? ""}${err?.stderr ?? err?.message ?? ""}`.trim() || "(command failed)", MAX_GHOST_RESULT_CHARS);
 		return {
 			name: "bash_command",
-			key,
-			args: ["npm test"],
+			key: cls.key,
+			args: [cls.label],
 			content,
 			bytes: Buffer.byteLength(content),
 			collectedAt: Date.now(),
-			causalFiles,
+			causalFiles: cls.isFingerprinted ? causalFiles : undefined,
 		};
 	}
 }
@@ -804,7 +1063,7 @@ export async function readSafeRepoText(cwd: string, token: string): Promise<{ re
 	}
 }
 
-function extractLocalImportRefs(fromRelative: string, text: string): string[] {
+export function extractLocalImportRefs(fromRelative: string, text: string): string[] {
 	const refs: string[] = [];
 	const dir = posix.dirname(fromRelative);
 	const patterns = [
@@ -870,10 +1129,12 @@ function extractSearchLiteral(draft: string): string | undefined {
 
 function normalizeBashCacheCommand(command: string): string | undefined {
 	const normalized = command.trim().replace(/\s+/g, " ");
+	// Legacy hidden-context git keys (preserved for warmGhostTools output paths).
 	if (normalized === "git status --short" || normalized === "git status -s") return "git_status_short:status --short";
 	if (normalized === "git diff --name-only") return "git_diff_name_only:diff --name-only";
-	if (/^npm (?:run )?test(?: --(?: --silent|silent))?$/.test(normalized)) return "bash:npm test";
-	if (/^npm (?:run )?test 2>&1 \| tail -\d+$/.test(normalized)) return "bash:npm test";
+	// registry-driven command class lookup.
+	const cls = findCommandClass(normalized);
+	if (cls) return cls.key;
 	return undefined;
 }
 
@@ -920,19 +1181,26 @@ function isReadFutureStillValid(state: PrecogState, tool: GhostToolResult): bool
 }
 
 function isCommandFutureStillValid(state: PrecogState, tool: GhostToolResult): boolean {
-	if (tool.name !== "bash_command" || tool.key !== "bash:npm test") return false;
+	if (tool.name !== "bash_command") return false;
+	const cls = commandClassByKey(tool.key);
+	if (!cls) return false;
+	if (!cls.isFingerprinted) {
+		// Unfingerprinted classes use TTL-only validation (handled via collectedAt + TTL).
+		const ageMs = Date.now() - tool.collectedAt;
+		return ageMs >= 0 && ageMs <= Number(process.env.PI_PRECOG_COMMAND_UNFINGERPRINTED_TTL_MS ?? 2_000);
+	}
 	const cwd = state.snapshot.cwd ? resolve(state.snapshot.cwd) : "";
 	if (!cwd || !tool.causalFiles?.length) return false;
 	try {
-		const current = collectCommandCausalFilesSync(cwd);
+		const current = collectCommandCausalFilesSync(cwd, cls.causalFilter);
 		return sameCausalFiles(tool.causalFiles, current);
 	} catch {
 		return false;
 	}
 }
 
-async function collectCommandCausalFiles(cwd: string): Promise<Array<{ path: string; mtimeMs: number; size: number; sha1: string }>> {
-	const paths = await commandCausalPaths(cwd);
+async function collectCommandCausalFiles(cwd: string, filter: ((paths: string[]) => string[]) | undefined = undefined): Promise<Array<{ path: string; mtimeMs: number; size: number; sha1: string }>> {
+	const paths = await commandCausalPaths(cwd, filter);
 	const files: Array<{ path: string; mtimeMs: number; size: number; sha1: string }> = [];
 	for (const path of paths) {
 		const safe = resolveSafeRepoFile(cwd, path);
@@ -947,8 +1215,8 @@ async function collectCommandCausalFiles(cwd: string): Promise<Array<{ path: str
 	return files.sort((a, b) => a.path.localeCompare(b.path)).slice(0, 256);
 }
 
-function collectCommandCausalFilesSync(cwd: string): Array<{ path: string; mtimeMs: number; size: number; sha1: string }> {
-	const paths = commandCausalPathsSync(cwd);
+function collectCommandCausalFilesSync(cwd: string, filter: ((paths: string[]) => string[]) | undefined = undefined): Array<{ path: string; mtimeMs: number; size: number; sha1: string }> {
+	const paths = commandCausalPathsSync(cwd, filter);
 	const files: Array<{ path: string; mtimeMs: number; size: number; sha1: string }> = [];
 	for (const path of paths) {
 		const safe = resolveSafeRepoFile(cwd, path);
@@ -964,22 +1232,24 @@ function collectCommandCausalFilesSync(cwd: string): Array<{ path: string; mtime
 	return files.sort((a, b) => a.path.localeCompare(b.path)).slice(0, 256);
 }
 
-async function commandCausalPaths(cwd: string): Promise<string[]> {
+async function commandCausalPaths(cwd: string, filter: ((paths: string[]) => string[]) | undefined = undefined): Promise<string[]> {
+	const pick = filter ?? commandRelevantPaths;
 	const gitFiles = await gitKnownFiles(cwd);
-	if (gitFiles.length > 0) return commandRelevantPaths(gitFiles);
+	if (gitFiles.length > 0) return pick(gitFiles);
 	const discovered = await discoverRepoFiles(cwd);
-	return commandRelevantPaths(discovered);
+	return pick(discovered);
 }
 
-function commandCausalPathsSync(cwd: string): string[] {
+function commandCausalPathsSync(cwd: string, filter: ((paths: string[]) => string[]) | undefined = undefined): string[] {
+	const pick = filter ?? commandRelevantPaths;
 	try {
 		const { stdout } = execFileSyncCompat("git", ["ls-files"], cwd);
 		const gitFiles = stdout.split("\n").map((line) => line.trim()).filter(Boolean);
-		if (gitFiles.length > 0) return commandRelevantPaths(gitFiles);
+		if (gitFiles.length > 0) return pick(gitFiles);
 	} catch {
 		// Fall back to a conservative top-level/source/test scan.
 	}
-	return commandRelevantPaths(discoverRepoFilesSync(cwd));
+	return pick(discoverRepoFilesSync(cwd));
 }
 
 async function discoverRepoFiles(cwd: string): Promise<string[]> {

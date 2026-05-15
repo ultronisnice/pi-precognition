@@ -13,6 +13,7 @@
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { applyCacheDelay } from "./cache-delay.ts";
 import { exec } from "node:child_process";
 import { access, readFile, stat } from "node:fs/promises";
 import { relative, resolve, sep } from "node:path";
@@ -228,6 +229,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = tryGhostToolCache(STATE, "read", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "read", mode: "stable-contract", key: hit.details.precogKey });
+				await applyCacheDelay("read");
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "read" });
@@ -248,6 +250,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = await tryGhostToolCacheAsync(STATE, "bash", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "bash", mode: "stable-contract", key: hit.details.precogKey });
+				await applyCacheDelay("bash");
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "bash" });
@@ -273,6 +276,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = tryGhostToolCache(STATE, "grep", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "grep", mode: "stable-contract", key: hit.details.precogKey });
+				await applyCacheDelay("grep");
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "grep" });
