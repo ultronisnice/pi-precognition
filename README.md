@@ -160,7 +160,7 @@ Live-API benchmark replay is being extracted into a `pi-precognition bench` CLI 
 | `cache-index` | Cache keys but not contents. | Economical context |
 | `full` | Warmed file contents in a hidden custom message. | Bench/research |
 
-Every public number is measured against `silent-futures`.
+Every headline number is measured against `silent-futures`. The broader 15-paired mixed A/B in [`docs/benchmarks.md`](docs/benchmarks.md) was run with `full` injection mode and is labeled there as historical/diagnostic context.
 
 ## Status
 
