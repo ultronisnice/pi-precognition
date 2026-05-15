@@ -527,11 +527,94 @@ export function buildInjection(
 	};
 }
 
+/**
+ * Format the live status line. Vocabulary discipline:
+ *   - watching: session armed, no useful draft yet
+ *   - armed: futures warmed and ready
+ *   - validated/served: cache hit (formatted separately via formatHitReceipt)
+ *   - rejected: stale future refused
+ *   - no signal: confidence too low to warm
+ *
+ * Style: minimal, legible, receipt-driven. Never debug spam.
+ */
 export function formatWidget(evidence: PrecogEvidence | undefined, state: PrecogState): string {
-	const refs = (evidence?.refs?.length ?? 0) + (evidence?.changed?.length ?? 0);
-	const ms = state.stats.lastAnalyzeMs.toFixed(2);
-	const source = state.snapshot.source === "git" ? "git" : "draft";
-	return `precog: ${refs} refs warm | ${ms}ms | ${source}`;
+	const mode = (process.env.PI_PRECOG_INJECTION_MODE ?? "silent-futures");
+	const modeTag = mode === "silent-futures" ? "silent" : mode;
+	const warmed = state.warmedFiles.length;
+	const ghosts = state.ghostTools.length;
+	const armed = warmed + ghosts;
+
+	// No evidence or weak evidence → watching state
+	if (!evidence || evidence.confidence < 0.25) {
+		return `precog · watching · ${modeTag}`;
+	}
+
+	// Evidence exists but nothing actually warmed → no deterministic futures
+	if (armed === 0) {
+		return `precog · no deterministic futures · ${modeTag}`;
+	}
+
+	// Futures armed
+	const plural = armed === 1 ? "future" : "futures";
+	const hasFingerprint = state.ghostTools.some((t) => t.causalFiles && t.causalFiles.length > 0);
+	const fpTag = hasFingerprint ? " · fingerprinted" : "";
+	return `precog · ${armed} ${plural} armed · ${modeTag}${fpTag}`;
+}
+
+/**
+ * Format the "money moment" — a cache hit receipt. This is what the operator
+ * sees when a future just saved them a wait.
+ *
+ *   precog ✓ bash:npm test · 15.2s → 29ms · fingerprint ok
+ *
+ * `coldEstimateMs` is the modeled wait the tool would have cost without
+ * precognition (e.g. 750ms for npm test, 5ms for read). Caller passes it
+ * because the wrapper knows the served class.
+ */
+export function formatHitReceipt(opts: {
+	tool: "read" | "bash" | "grep";
+	key: string;
+	servedMs: number;
+	coldEstimateMs: number;
+	fingerprintValidated: boolean;
+}): string {
+	const { key, servedMs, coldEstimateMs, fingerprintValidated } = opts;
+	const cold = formatDuration(coldEstimateMs);
+	const served = formatDuration(servedMs);
+	const fpTag = fingerprintValidated ? " · fingerprint ok" : " · ttl ok";
+	return `precog ✓ ${key} · ${cold} → ${served}${fpTag}`;
+}
+
+/**
+ * Format a stale-future-rejected receipt.
+ *
+ *   precog · stale future rejected · fallback safe
+ */
+export function formatStaleRejection(opts: { tool: string; key: string }): string {
+	return `precog · stale future rejected · fallback safe`;
+}
+
+/**
+ * Format a session summary line (called at session_end if available).
+ *
+ *   precog · armed 3 · hits 1 · saved 15.2s · silent
+ */
+export function formatSessionSummary(state: PrecogState): string {
+	const mode = (process.env.PI_PRECOG_INJECTION_MODE ?? "silent-futures");
+	const modeTag = mode === "silent-futures" ? "silent" : mode;
+	const armed = state.stats.ghostToolWarms;
+	const hits = state.stats.toolCacheHits;
+	// We don't track savedMs in state.stats yet; show hits-only summary
+	if (hits === 0 && armed === 0) {
+		return `precog · no activity · ${modeTag}`;
+	}
+	return `precog · armed ${armed} · hits ${hits} · ${modeTag}`;
+}
+
+function formatDuration(ms: number): string {
+	if (ms < 1) return `${ms.toFixed(2)}ms`;
+	if (ms < 1000) return `${ms.toFixed(0)}ms`;
+	return `${(ms / 1000).toFixed(1)}s`;
 }
 
 export function snapshotStats(state: PrecogState) {

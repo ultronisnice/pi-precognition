@@ -15,6 +15,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { applyCacheDelay } from "./cache-delay.ts";
 import { exec } from "node:child_process";
+import { performance } from "node:perf_hooks";
 import { access, readFile, stat } from "node:fs/promises";
 import { relative, resolve, sep } from "node:path";
 import { promisify } from "node:util";
@@ -23,6 +24,9 @@ import {
 	buildInjection,
 	createPrecogState,
 	debugLog,
+	formatHitReceipt,
+	formatSessionSummary,
+	formatStaleRejection,
 	formatWidget,
 	observeDraft,
 	readSafeRepoText,
@@ -89,8 +93,9 @@ export default function piPrecognition(pi: ExtensionAPI): void {
 				registerCachedToolOverrides(pi, cwd);
 			}
 		if (ctx?.hasUI) {
-			ctx.ui?.setStatus?.(STATUS_KEY, "armed");
-			ctx.ui?.setWidget?.(WIDGET_KEY, ["precog: armed | idle"], { placement: "aboveEditor" });
+			const initial = formatWidget(undefined, STATE);
+			ctx.ui?.setStatus?.(STATUS_KEY, initial.replace(/^precog\s*[·:]?\s*/, ""));
+			ctx.ui?.setWidget?.(WIDGET_KEY, [initial], { placement: "aboveEditor" });
 			unsubscribeInput?.();
 			unsubscribeInput = ctx.ui?.onTerminalInput?.(() => {
 				queueMicrotask(() => scheduleObserve(ctx));
@@ -141,6 +146,11 @@ export default function piPrecognition(pi: ExtensionAPI): void {
 	});
 
 	(pi as any).on?.("session_shutdown", () => {
+		try {
+			const summary = formatSessionSummary(STATE);
+			latestCtx?.ui?.setStatus?.(STATUS_KEY, summary.replace(/^precog\s*[·:]?\s*/, ""));
+			latestCtx?.ui?.setWidget?.(WIDGET_KEY, [summary], { placement: "aboveEditor" });
+		} catch { /* never block on UI */ }
 		unsubscribeInput?.();
 		unsubscribeInput = undefined;
 			if (pendingTimer) clearTimeout(pendingTimer);
@@ -165,7 +175,7 @@ function scheduleObserve(ctx: any): void {
 		}
 		const evidence = observeDraft(STATE, draft);
 		const widget = formatWidget(evidence, STATE);
-		ctx.ui?.setStatus?.(STATUS_KEY, widget.replace(/^precog:\s*/, ""));
+		ctx.ui?.setStatus?.(STATUS_KEY, widget.replace(/^precog\s*[·:]?\s*/, ""));
 		ctx.ui?.setWidget?.(WIDGET_KEY, [widget], { placement: "aboveEditor" });
 		void debugLog({
 			event: "draft_observed",
@@ -229,7 +239,14 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = tryGhostToolCache(STATE, "read", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "read", mode: "stable-contract", key: hit.details.precogKey });
+				const hitStart = performance.now();
 				await applyCacheDelay("read");
+				const servedMs = performance.now() - hitStart;
+				try {
+					const line = formatHitReceipt({ tool: "read", key: String(hit.details.precogKey ?? "read"), servedMs, coldEstimateMs: 50, fingerprintValidated: true });
+					latestCtx?.ui?.setStatus?.(STATUS_KEY, line.replace(/^precog\s*[·:✓]?\s*/, "✓ "));
+					latestCtx?.ui?.setWidget?.(WIDGET_KEY, [line], { placement: "aboveEditor" });
+				} catch { /* never block on UI */ }
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "read" });
@@ -250,7 +267,15 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = await tryGhostToolCacheAsync(STATE, "bash", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "bash", mode: "stable-contract", key: hit.details.precogKey });
+				const hitStart = performance.now();
 				await applyCacheDelay("bash");
+				const servedMs = performance.now() - hitStart;
+				try {
+					const fingerprinted = Array.isArray(hit.details?.precogCausalFiles);
+					const line = formatHitReceipt({ tool: "bash", key: String(hit.details.precogKey ?? "bash"), servedMs, coldEstimateMs: 15000, fingerprintValidated: fingerprinted });
+					latestCtx?.ui?.setStatus?.(STATUS_KEY, line.replace(/^precog\s*[·:✓]?\s*/, "✓ "));
+					latestCtx?.ui?.setWidget?.(WIDGET_KEY, [line], { placement: "aboveEditor" });
+				} catch { /* never block on UI */ }
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "bash" });
@@ -276,7 +301,14 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = tryGhostToolCache(STATE, "grep", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "grep", mode: "stable-contract", key: hit.details.precogKey });
+				const hitStart = performance.now();
 				await applyCacheDelay("grep");
+				const servedMs = performance.now() - hitStart;
+				try {
+					const line = formatHitReceipt({ tool: "grep", key: String(hit.details.precogKey ?? "grep"), servedMs, coldEstimateMs: 250, fingerprintValidated: true });
+					latestCtx?.ui?.setStatus?.(STATUS_KEY, line.replace(/^precog\s*[·:✓]?\s*/, "✓ "));
+					latestCtx?.ui?.setWidget?.(WIDGET_KEY, [line], { placement: "aboveEditor" });
+				} catch { /* never block on UI */ }
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "grep" });
