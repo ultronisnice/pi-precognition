@@ -32,6 +32,10 @@ before(() => {
 		SAVED_ENV[k] = process.env[k];
 		delete process.env[k];
 	}
+	// This legacy suite was authored against the historical default of
+	// PI_PRECOG_INJECTION_MODE=full (which is now silent-futures by default).
+	// Pin full here so the suite's hidden-injection assertions stay meaningful.
+	process.env.PI_PRECOG_INJECTION_MODE = "full";
 });
 after(() => {
 	for (const k of SAVED_ENV_KEYS) {

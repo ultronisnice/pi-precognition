@@ -1,0 +1,1559 @@
+{
+  "generatedAt": "2026-05-15T03:08:38.015Z",
+  "config": {
+    "provider": "anthropic",
+    "model": "claude-opus-4-7",
+    "thinking": "minimal",
+    "runs": 3,
+    "timeoutMs": 180000,
+    "seed": 8675309
+  },
+  "results": [
+    {
+      "arm": "default",
+      "workload": "bugfix_explicit_file",
+      "type": "bugfix",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2708.4383749999997,
+        "submitToFirstToolCall": 2709.569291,
+        "submitToFirstUsefulFileReference": 2708.4383749999997,
+        "taskCompletion": 7587.450291
+      },
+      "counts": {
+        "events": 52,
+        "toolCalls": 2,
+        "textDeltas": 6,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 98,
+        "cacheRead": 3287,
+        "cacheWrite": 349,
+        "totalTokens": 3735,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.00245,
+          "cacheRead": 0.0016435,
+          "cacheWrite": 0.00218125,
+          "total": 0.00627975
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "bugfix_explicit_file",
+      "type": "bugfix",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4374.746874999999,
+        "submitToFirstToolCall": 2612.5370839999996,
+        "submitToFirstUsefulFileReference": 2618.0827919999992,
+        "taskCompletion": 12201.328209
+      },
+      "counts": {
+        "events": 68,
+        "toolCalls": 3,
+        "textDeltas": 9,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 131,
+        "cacheRead": 3422,
+        "cacheWrite": 110,
+        "totalTokens": 3664,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.003275,
+          "cacheRead": 0.0017109999999999998,
+          "cacheWrite": 0.0006875000000000001,
+          "total": 0.0056784999999999995
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "bugfix_explicit_file",
+      "type": "bugfix",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2647.008750000001,
+        "submitToFirstToolCall": 3588.5657920000012,
+        "submitToFirstUsefulFileReference": 3589.8031249999985,
+        "taskCompletion": 7847.308000000001
+      },
+      "counts": {
+        "events": 53,
+        "toolCalls": 2,
+        "textDeltas": 8,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 103,
+        "cacheRead": 3286,
+        "cacheWrite": 382,
+        "totalTokens": 3772,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.002575,
+          "cacheRead": 0.001643,
+          "cacheWrite": 0.0023875000000000003,
+          "total": 0.0066105
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "bugfix_explicit_file",
+      "type": "bugfix",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4931.816583,
+        "submitToFirstToolCall": 3402.177582999997,
+        "submitToFirstUsefulFileReference": 3403.8722080000007,
+        "taskCompletion": 10153.250457999995
+      },
+      "counts": {
+        "events": 62,
+        "toolCalls": 3,
+        "textDeltas": 6,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 113,
+        "cacheRead": 3200,
+        "cacheWrite": 322,
+        "totalTokens": 3636,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0028250000000000003,
+          "cacheRead": 0.0015999999999999999,
+          "cacheWrite": 0.0020125,
+          "total": 0.0064425
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "bugfix_explicit_file",
+      "type": "bugfix",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 5215.775249999999,
+        "submitToFirstToolCall": 2869.1156249999985,
+        "submitToFirstUsefulFileReference": 2870.493000000002,
+        "taskCompletion": 10718.402125
+      },
+      "counts": {
+        "events": 63,
+        "toolCalls": 3,
+        "textDeltas": 7,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 118,
+        "cacheRead": 3199,
+        "cacheWrite": 322,
+        "totalTokens": 3640,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.00295,
+          "cacheRead": 0.0015995,
+          "cacheWrite": 0.0020125,
+          "total": 0.006567
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "bugfix_explicit_file",
+      "type": "bugfix",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2671.623416000002,
+        "submitToFirstToolCall": 3607.669750000001,
+        "submitToFirstUsefulFileReference": 2671.8805830000056,
+        "taskCompletion": 8438.391375
+      },
+      "counts": {
+        "events": 53,
+        "toolCalls": 2,
+        "textDeltas": 8,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 110,
+        "cacheRead": 3286,
+        "cacheWrite": 378,
+        "totalTokens": 3775,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0027500000000000003,
+          "cacheRead": 0.001643,
+          "cacheWrite": 0.0023625,
+          "total": 0.0067605
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "failing_test_implicit_source",
+      "type": "failing-test",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2940.345499999996,
+        "submitToFirstToolCall": 3211.7669580000074,
+        "submitToFirstUsefulFileReference": 3215.529792000001,
+        "taskCompletion": 11627.026333000002
+      },
+      "counts": {
+        "events": 55,
+        "toolCalls": 2,
+        "textDeltas": 6,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 56,
+        "cacheRead": 3515,
+        "cacheWrite": 110,
+        "totalTokens": 3682,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0014,
+          "cacheRead": 0.0017575,
+          "cacheWrite": 0.0006875000000000001,
+          "total": 0.00385
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "failing_test_implicit_source",
+      "type": "failing-test",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 14500.52725,
+        "submitToFirstToolCall": 2732.451667000001,
+        "submitToFirstUsefulFileReference": 2792.968332999997,
+        "taskCompletion": 21855.253958
+      },
+      "counts": {
+        "events": 111,
+        "toolCalls": 5,
+        "textDeltas": 8,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 161,
+        "cacheRead": 3960,
+        "cacheWrite": 110,
+        "totalTokens": 4232,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.004025,
+          "cacheRead": 0.00198,
+          "cacheWrite": 0.0006875000000000001,
+          "total": 0.0066974999999999995
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "failing_test_implicit_source",
+      "type": "failing-test",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2923.2945420000033,
+        "submitToFirstToolCall": 3363.5222090000025,
+        "submitToFirstUsefulFileReference": 3372.7218339999963,
+        "taskCompletion": 7725.083916999996
+      },
+      "counts": {
+        "events": 51,
+        "toolCalls": 2,
+        "textDeltas": 6,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 91,
+        "cacheRead": 3276,
+        "cacheWrite": 377,
+        "totalTokens": 3745,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.002275,
+          "cacheRead": 0.001638,
+          "cacheWrite": 0.0023562500000000003,
+          "total": 0.00627425
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "failing_test_implicit_source",
+      "type": "failing-test",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 14523.100416000001,
+        "submitToFirstToolCall": 2492.4719160000095,
+        "submitToFirstUsefulFileReference": 2563.001541000005,
+        "taskCompletion": 23222.113415999993
+      },
+      "counts": {
+        "events": 125,
+        "toolCalls": 7,
+        "textDeltas": 10,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 133,
+        "cacheRead": 4162,
+        "cacheWrite": 110,
+        "totalTokens": 4406,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0033250000000000003,
+          "cacheRead": 0.002081,
+          "cacheWrite": 0.0006875000000000001,
+          "total": 0.0060985
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "failing_test_implicit_source",
+      "type": "failing-test",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 8843.715417,
+        "submitToFirstToolCall": 4534.746041999984,
+        "submitToFirstUsefulFileReference": 4543.341458999988,
+        "taskCompletion": 11051.800999999978
+      },
+      "counts": {
+        "events": 55,
+        "toolCalls": 2,
+        "textDeltas": 6,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 145,
+        "cacheRead": 3469,
+        "cacheWrite": 99,
+        "totalTokens": 3714,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.003625,
+          "cacheRead": 0.0017345,
+          "cacheWrite": 0.00061875,
+          "total": 0.00598325
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "failing_test_implicit_source",
+      "type": "failing-test",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 6934.918375000008,
+        "submitToFirstToolCall": 2601.6125000000175,
+        "submitToFirstUsefulFileReference": 2676.550084000017,
+        "taskCompletion": 21420.528500000015
+      },
+      "counts": {
+        "events": 111,
+        "toolCalls": 5,
+        "textDeltas": 12,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 152,
+        "cacheRead": 3842,
+        "cacheWrite": 110,
+        "totalTokens": 4105,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0038,
+          "cacheRead": 0.001921,
+          "cacheWrite": 0.0006875000000000001,
+          "total": 0.0064135
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "review",
+      "type": "review",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 5208.32920800001,
+        "submitToFirstToolCall": 2732.984166999988,
+        "submitToFirstUsefulFileReference": 2733.671166999993,
+        "taskCompletion": 18082.80587499999
+      },
+      "counts": {
+        "events": 56,
+        "toolCalls": 1,
+        "textDeltas": 27,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 692,
+        "cacheRead": 3035,
+        "cacheWrite": 172,
+        "totalTokens": 3900,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0173,
+          "cacheRead": 0.0015175,
+          "cacheWrite": 0.001075,
+          "total": 0.019897500000000002
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "review",
+      "type": "review",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2018.1801670000132,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": 2554.2645840000187,
+        "taskCompletion": 12701.675292
+      },
+      "counts": {
+        "events": 36,
+        "toolCalls": 0,
+        "textDeltas": 23,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 6,
+        "output": 567,
+        "cacheRead": 2051,
+        "cacheWrite": 1190,
+        "totalTokens": 3814,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.014175,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.0074375000000000005,
+          "total": 0.022668
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "review",
+      "type": "review",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4729.442666000017,
+        "submitToFirstToolCall": 3074.861957999994,
+        "submitToFirstUsefulFileReference": 3076.0962080000027,
+        "taskCompletion": 14159.655166000011
+      },
+      "counts": {
+        "events": 48,
+        "toolCalls": 1,
+        "textDeltas": 20,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 532,
+        "cacheRead": 3035,
+        "cacheWrite": 172,
+        "totalTokens": 3740,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.013300000000000001,
+          "cacheRead": 0.0015175,
+          "cacheWrite": 0.001075,
+          "total": 0.015897500000000002
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "review",
+      "type": "review",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2919.362832999992,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": 3441.9604999999865,
+        "taskCompletion": 12062.669332999998
+      },
+      "counts": {
+        "events": 32,
+        "toolCalls": 0,
+        "textDeltas": 19,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 6,
+        "output": 512,
+        "cacheRead": 2051,
+        "cacheWrite": 1189,
+        "totalTokens": 3758,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.0128,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.00743125,
+          "total": 0.02128675
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "review",
+      "type": "review",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2094.998709000007,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": 2634.1614169999957,
+        "taskCompletion": 12724.634875000018
+      },
+      "counts": {
+        "events": 36,
+        "toolCalls": 0,
+        "textDeltas": 23,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 6,
+        "output": 579,
+        "cacheRead": 2051,
+        "cacheWrite": 1190,
+        "totalTokens": 3826,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.014475,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.0074375000000000005,
+          "total": 0.022968000000000002
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "review",
+      "type": "review",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4440.434499999974,
+        "submitToFirstToolCall": 2890.84262499999,
+        "submitToFirstUsefulFileReference": 2892.1291249999776,
+        "taskCompletion": 14448.282917000004
+      },
+      "counts": {
+        "events": 50,
+        "toolCalls": 1,
+        "textDeltas": 21,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 554,
+        "cacheRead": 3034,
+        "cacheWrite": 171,
+        "totalTokens": 3760,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.013850000000000001,
+          "cacheRead": 0.001517,
+          "cacheWrite": 0.00106875,
+          "total": 0.01644075
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "refactor",
+      "type": "refactor",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4636.359458999999,
+        "submitToFirstToolCall": 3063.7804590000305,
+        "submitToFirstUsefulFileReference": 3069.454792000004,
+        "taskCompletion": 21026.027000000002
+      },
+      "counts": {
+        "events": 80,
+        "toolCalls": 3,
+        "textDeltas": 11,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 84,
+        "cacheRead": 3825,
+        "cacheWrite": 329,
+        "totalTokens": 4239,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0021000000000000003,
+          "cacheRead": 0.0019125,
+          "cacheWrite": 0.00205625,
+          "total": 0.00607375
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "refactor",
+      "type": "refactor",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 5206.666541999963,
+        "submitToFirstToolCall": 2948.606749999977,
+        "submitToFirstUsefulFileReference": 2950.3564999999944,
+        "taskCompletion": 13350.00454200001
+      },
+      "counts": {
+        "events": 58,
+        "toolCalls": 2,
+        "textDeltas": 11,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 181,
+        "cacheRead": 3289,
+        "cacheWrite": 343,
+        "totalTokens": 3814,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.004525,
+          "cacheRead": 0.0016445,
+          "cacheWrite": 0.0021437500000000003,
+          "total": 0.008318250000000001
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "refactor",
+      "type": "refactor",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4722.079458000022,
+        "submitToFirstToolCall": 3193.6904579999973,
+        "submitToFirstUsefulFileReference": 3197.4134579999954,
+        "taskCompletion": 26663.220458000025
+      },
+      "counts": {
+        "events": 102,
+        "toolCalls": 5,
+        "textDeltas": 10,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 146,
+        "cacheRead": 4069,
+        "cacheWrite": 95,
+        "totalTokens": 4311,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.00365,
+          "cacheRead": 0.0020345,
+          "cacheWrite": 0.00059375,
+          "total": 0.00628325
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "refactor",
+      "type": "refactor",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4852.898917000042,
+        "submitToFirstToolCall": 3279.5250000000233,
+        "submitToFirstUsefulFileReference": 3282.99770800001,
+        "taskCompletion": 19289.052125000046
+      },
+      "counts": {
+        "events": 95,
+        "toolCalls": 4,
+        "textDeltas": 12,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 188,
+        "cacheRead": 4070,
+        "cacheWrite": 227,
+        "totalTokens": 4486,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0047,
+          "cacheRead": 0.002035,
+          "cacheWrite": 0.00141875,
+          "total": 0.00815875
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "refactor",
+      "type": "refactor",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4778.162375000014,
+        "submitToFirstToolCall": 2599.921667000046,
+        "submitToFirstUsefulFileReference": 2600.848958000017,
+        "taskCompletion": 19375.459292000043
+      },
+      "counts": {
+        "events": 76,
+        "toolCalls": 3,
+        "textDeltas": 10,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 1,
+        "output": 55,
+        "cacheRead": 3640,
+        "cacheWrite": 310,
+        "totalTokens": 4006,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.0013750000000000001,
+          "cacheRead": 0.00182,
+          "cacheWrite": 0.0019375,
+          "total": 0.0051375
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "refactor",
+      "type": "refactor",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4832.505084000004,
+        "submitToFirstToolCall": 3199.414374999993,
+        "submitToFirstUsefulFileReference": 3200.829083999968,
+        "taskCompletion": 13978.351167000015
+      },
+      "counts": {
+        "events": 68,
+        "toolCalls": 2,
+        "textDeltas": 7,
+        "precogEvents": 7,
+        "precogInjected": 1,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1
+      },
+      "usage": {
+        "input": 1,
+        "output": 307,
+        "cacheRead": 3494,
+        "cacheWrite": 312,
+        "totalTokens": 4114,
+        "cost": {
+          "input": 5e-06,
+          "output": 0.007675,
+          "cacheRead": 0.0017469999999999999,
+          "cacheWrite": 0.0019500000000000001,
+          "total": 0.011377
+        }
+      },
+      "postCheck": {
+        "required": true,
+        "ok": true,
+        "stdout": "\n> test\n> node --experimental-strip-types test.js --silent\n\nok\n",
+        "stderr": ""
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "low_signal_chat",
+      "type": "chat",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2076.1259169999976,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": null,
+        "taskCompletion": 3446.6684999999707
+      },
+      "counts": {
+        "events": 15,
+        "toolCalls": 0,
+        "textDeltas": 4,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 6,
+        "output": 61,
+        "cacheRead": 2051,
+        "cacheWrite": 963,
+        "totalTokens": 3081,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.001525,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.006018750000000001,
+          "total": 0.008599250000000001
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "low_signal_chat",
+      "type": "chat",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 1637.826624999987,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": null,
+        "taskCompletion": 2755.445207999961
+      },
+      "counts": {
+        "events": 14,
+        "toolCalls": 0,
+        "textDeltas": 3,
+        "precogEvents": 5,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 6,
+        "output": 65,
+        "cacheRead": 2051,
+        "cacheWrite": 964,
+        "totalTokens": 3086,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.0016250000000000001,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.006025,
+          "total": 0.0087055
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "low_signal_chat",
+      "type": "chat",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 1394.6415419999976,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": null,
+        "taskCompletion": 4627.106291999982
+      },
+      "counts": {
+        "events": 19,
+        "toolCalls": 0,
+        "textDeltas": 8,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 6,
+        "output": 104,
+        "cacheRead": 2051,
+        "cacheWrite": 963,
+        "totalTokens": 3124,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.0026000000000000003,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.006018750000000001,
+          "total": 0.00967425
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "low_signal_chat",
+      "type": "chat",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 1732.1274579999736,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": null,
+        "taskCompletion": 3658.5894160000025
+      },
+      "counts": {
+        "events": 16,
+        "toolCalls": 0,
+        "textDeltas": 5,
+        "precogEvents": 5,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 6,
+        "output": 109,
+        "cacheRead": 2051,
+        "cacheWrite": 963,
+        "totalTokens": 3129,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.002725,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.006018750000000001,
+          "total": 0.00979925
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "low_signal_chat",
+      "type": "chat",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 2042.5954580000252,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": null,
+        "taskCompletion": 3252.9271249999874
+      },
+      "counts": {
+        "events": 14,
+        "toolCalls": 0,
+        "textDeltas": 3,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 6,
+        "output": 65,
+        "cacheRead": 2051,
+        "cacheWrite": 963,
+        "totalTokens": 3085,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.0016250000000000001,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.006018750000000001,
+          "total": 0.00869925
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "low_signal_chat",
+      "type": "chat",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 1818.9717919999966,
+        "submitToFirstToolCall": null,
+        "submitToFirstUsefulFileReference": null,
+        "taskCompletion": 2816.533167000045
+      },
+      "counts": {
+        "events": 14,
+        "toolCalls": 0,
+        "textDeltas": 3,
+        "precogEvents": 5,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0
+      },
+      "usage": {
+        "input": 6,
+        "output": 36,
+        "cacheRead": 2051,
+        "cacheWrite": 963,
+        "totalTokens": 3056,
+        "cost": {
+          "input": 3.0000000000000004e-05,
+          "output": 0.0009000000000000001,
+          "cacheRead": 0.0010255,
+          "cacheWrite": 0.006018750000000001,
+          "total": 0.00797425
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    }
+  ],
+  "summary": [
+    {
+      "workload": "bugfix_explicit_file",
+      "submitToFirstToken": {
+        "defaultMs": 2671.623416000002,
+        "offMs": 4931.816583,
+        "defaultP95Ms": 2708.4383749999997,
+        "offP95Ms": 5215.775249999999,
+        "deltaMs": -2260.1931669999976,
+        "speedup": 1.845999909068021
+      },
+      "submitToFirstToolCall": {
+        "defaultMs": 3588.5657920000012,
+        "offMs": 2869.1156249999985,
+        "defaultP95Ms": 3607.669750000001,
+        "offP95Ms": 3402.177582999997,
+        "deltaMs": 719.4501670000027,
+        "speedup": 0.799515960219017
+      },
+      "submitToFirstUsefulFileReference": {
+        "defaultMs": 2708.4383749999997,
+        "offMs": 2870.493000000002,
+        "defaultP95Ms": 3589.8031249999985,
+        "offP95Ms": 3403.8722080000007,
+        "deltaMs": -162.0546250000025,
+        "speedup": 1.0598332332372165
+      },
+      "taskCompletion": {
+        "defaultMs": 7847.308000000001,
+        "offMs": 10718.402125,
+        "defaultP95Ms": 8438.391375,
+        "offP95Ms": 12201.328209,
+        "deltaMs": -2871.0941249999996,
+        "speedup": 1.3658699422782945
+      },
+      "quality": {
+        "defaultPostPassRate": 1,
+        "offPostPassRate": 1,
+        "defaultTimeouts": 0,
+        "offTimeouts": 0,
+        "defaultPrecogInjected": 3
+      }
+    },
+    {
+      "workload": "failing_test_implicit_source",
+      "submitToFirstToken": {
+        "defaultMs": 2940.345499999996,
+        "offMs": 14500.52725,
+        "defaultP95Ms": 8843.715417,
+        "offP95Ms": 14523.100416000001,
+        "deltaMs": -11560.181750000003,
+        "speedup": 4.931572582201656
+      },
+      "submitToFirstToolCall": {
+        "defaultMs": 3363.5222090000025,
+        "offMs": 2601.6125000000175,
+        "defaultP95Ms": 4534.746041999984,
+        "offP95Ms": 2732.451667000001,
+        "deltaMs": 761.909708999985,
+        "speedup": 0.7734786150775839
+      },
+      "submitToFirstUsefulFileReference": {
+        "defaultMs": 3372.7218339999963,
+        "offMs": 2676.550084000017,
+        "defaultP95Ms": 4543.341458999988,
+        "offP95Ms": 2792.968332999997,
+        "deltaMs": 696.1717499999795,
+        "speedup": 0.7935875579830043
+      },
+      "taskCompletion": {
+        "defaultMs": 11051.800999999978,
+        "offMs": 21855.253958,
+        "defaultP95Ms": 11627.026333000002,
+        "offP95Ms": 23222.113415999993,
+        "deltaMs": -10803.452958000024,
+        "speedup": 1.977528726584929
+      },
+      "quality": {
+        "defaultPostPassRate": 1,
+        "offPostPassRate": 1,
+        "defaultTimeouts": 0,
+        "offTimeouts": 0,
+        "defaultPrecogInjected": 3
+      }
+    },
+    {
+      "workload": "review",
+      "submitToFirstToken": {
+        "defaultMs": 2094.998709000007,
+        "offMs": 4729.442666000017,
+        "defaultP95Ms": 2919.362832999992,
+        "offP95Ms": 5208.32920800001,
+        "deltaMs": -2634.4439570000104,
+        "speedup": 2.257491923829153
+      },
+      "submitToFirstToolCall": {
+        "defaultMs": null,
+        "offMs": 2890.84262499999,
+        "defaultP95Ms": null,
+        "offP95Ms": 3074.861957999994,
+        "deltaMs": null,
+        "speedup": null
+      },
+      "submitToFirstUsefulFileReference": {
+        "defaultMs": 2634.1614169999957,
+        "offMs": 2892.1291249999776,
+        "defaultP95Ms": 3441.9604999999865,
+        "offP95Ms": 3076.0962080000027,
+        "deltaMs": -257.96770799998194,
+        "speedup": 1.09793162496996
+      },
+      "taskCompletion": {
+        "defaultMs": 12701.675292,
+        "offMs": 14448.282917000004,
+        "defaultP95Ms": 12724.634875000018,
+        "offP95Ms": 18082.80587499999,
+        "deltaMs": -1746.6076250000042,
+        "speedup": 1.1375100201231
+      },
+      "quality": {
+        "defaultPostPassRate": null,
+        "offPostPassRate": null,
+        "defaultTimeouts": 0,
+        "offTimeouts": 0,
+        "defaultPrecogInjected": 3
+      }
+    },
+    {
+      "workload": "refactor",
+      "submitToFirstToken": {
+        "defaultMs": 4832.505084000004,
+        "offMs": 4778.162375000014,
+        "defaultP95Ms": 4852.898917000042,
+        "offP95Ms": 5206.666541999963,
+        "deltaMs": 54.342708999989554,
+        "speedup": 0.9887547538894654
+      },
+      "submitToFirstToolCall": {
+        "defaultMs": 3199.414374999993,
+        "offMs": 2948.606749999977,
+        "defaultP95Ms": 3279.5250000000233,
+        "offP95Ms": 3193.6904579999973,
+        "deltaMs": 250.80762500001583,
+        "speedup": 0.9216082708886321
+      },
+      "submitToFirstUsefulFileReference": {
+        "defaultMs": 3200.829083999968,
+        "offMs": 2950.3564999999944,
+        "defaultP95Ms": 3282.99770800001,
+        "offP95Ms": 3197.4134579999954,
+        "deltaMs": 250.47258399997372,
+        "speedup": 0.9217475918186276
+      },
+      "taskCompletion": {
+        "defaultMs": 19289.052125000046,
+        "offMs": 19375.459292000043,
+        "defaultP95Ms": 21026.027000000002,
+        "offP95Ms": 26663.220458000025,
+        "deltaMs": -86.40716699999757,
+        "speedup": 1.0044795963243838
+      },
+      "quality": {
+        "defaultPostPassRate": 1,
+        "offPostPassRate": 1,
+        "defaultTimeouts": 0,
+        "offTimeouts": 0,
+        "defaultPrecogInjected": 3
+      }
+    },
+    {
+      "workload": "low_signal_chat",
+      "submitToFirstToken": {
+        "defaultMs": 1732.1274579999736,
+        "offMs": 2042.5954580000252,
+        "defaultP95Ms": 1818.9717919999966,
+        "offP95Ms": 2076.1259169999976,
+        "deltaMs": -310.4680000000517,
+        "speedup": 1.1792408512238113
+      },
+      "submitToFirstToolCall": {
+        "defaultMs": null,
+        "offMs": null,
+        "defaultP95Ms": null,
+        "offP95Ms": null,
+        "deltaMs": null,
+        "speedup": null
+      },
+      "submitToFirstUsefulFileReference": {
+        "defaultMs": null,
+        "offMs": null,
+        "defaultP95Ms": null,
+        "offP95Ms": null,
+        "deltaMs": null,
+        "speedup": null
+      },
+      "taskCompletion": {
+        "defaultMs": 2816.533167000045,
+        "offMs": 3446.6684999999707,
+        "defaultP95Ms": 3658.5894160000025,
+        "offP95Ms": 4627.106291999982,
+        "deltaMs": -630.1353329999256,
+        "speedup": 1.2237272901249365
+      },
+      "quality": {
+        "defaultPostPassRate": null,
+        "offPostPassRate": null,
+        "defaultTimeouts": 0,
+        "offTimeouts": 0,
+        "defaultPrecogInjected": 0
+      }
+    }
+  ],
+  "global": {
+    "winRates": {
+      "submitToFirstToken": 0.7333333333333333,
+      "submitToFirstToolCall": 0,
+      "submitToFirstUsefulFileReference": 0.25,
+      "taskCompletion": 0.9333333333333333
+    },
+    "avgCompletionMs": {
+      "default": 10352.669233266672,
+      "off": 14465.133788866668
+    },
+    "passRate": {
+      "default": 1,
+      "off": 1
+    },
+    "timeouts": {
+      "default": 0,
+      "off": 0
+    }
+  }
+}

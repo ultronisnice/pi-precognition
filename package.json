@@ -2,11 +2,14 @@
   "name": "pi-precognition",
   "version": "0.2.0",
   "description": "Validated tool futures for low-latency Pi coding agents. Predict the wait, not the answer.",
-  "author": "pi-precognition contributors",
+  "author": {
+    "name": "ULTRXN",
+    "url": "https://github.com/ultronisnice"
+  },
   "homepage": "https://github.com/ultronisnice/pi-precognition#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ultronisnice/pi-precognition.git"
+    "url": "git+https://github.com/ultronisnice/pi-precognition.git"
   },
   "bugs": {
     "url": "https://github.com/ultronisnice/pi-precognition/issues"
@@ -40,7 +43,9 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "demo": "bash docs/demo.sh"
+    "demo": "bash docs/demo.sh",
+    "demo:visual": "bash docs/demo.sh",
+    "bench:local": "node --test tests/*.test.mjs"
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": "*"

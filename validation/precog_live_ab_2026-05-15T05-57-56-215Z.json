@@ -1,0 +1,461 @@
+{
+  "generatedAt": "2026-05-15T05:57:56.194Z",
+  "config": {
+    "provider": "anthropic",
+    "model": "claude-opus-4-7",
+    "thinking": "minimal",
+    "runs": 3,
+    "timeoutMs": 180000,
+    "seed": 8675309,
+    "toolCache": true,
+    "injectionMode": "silent-futures",
+    "draftPrime": true,
+    "commandFutures": true,
+    "commandTestSleepMs": 15000
+  },
+  "results": [
+    {
+      "arm": "default",
+      "workload": "command_test_future",
+      "type": "read-only",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4469.40625,
+        "submitToFirstToolCall": 3067.408958,
+        "submitToFirstToolResult": 3158.216457999999,
+        "submitToFirstUsefulFileReference": 3158.6672499999986,
+        "taskCompletion": 6121.035875000001,
+        "cumulativeToolWait": 29.157499999997526
+      },
+      "counts": {
+        "events": 34,
+        "toolCalls": 1,
+        "textDeltas": 5,
+        "precogEvents": 9,
+        "precogInjected": 0,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1,
+        "precogToolCacheHits": 1,
+        "precogToolCacheMisses": 0
+      },
+      "usage": {
+        "seen": 2,
+        "input": 7,
+        "output": 236,
+        "cacheRead": 5087,
+        "cacheWrite": 1137,
+        "cost": {
+          "input": 3.5000000000000004e-05,
+          "output": 0.005900000000000001,
+          "cacheRead": 0.0025434999999999998,
+          "cacheWrite": 0.007106250000000001,
+          "total": 0.015584750000000001
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "command_test_future",
+      "type": "read-only",
+      "runIndex": 1,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 20436.677666999996,
+        "submitToFirstToolCall": 3034.8023749999993,
+        "submitToFirstToolResult": 18365.392249999997,
+        "submitToFirstUsefulFileReference": 18365.392249999997,
+        "taskCompletion": 21910.579250000003,
+        "cumulativeToolWait": 15234.695624999997
+      },
+      "counts": {
+        "events": 36,
+        "toolCalls": 1,
+        "textDeltas": 4,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0,
+        "precogToolCacheHits": 0,
+        "precogToolCacheMisses": 0
+      },
+      "usage": {
+        "seen": 2,
+        "input": 7,
+        "output": 199,
+        "cacheRead": 5086,
+        "cacheWrite": 1137,
+        "cost": {
+          "input": 3.5000000000000004e-05,
+          "output": 0.004975,
+          "cacheRead": 0.002543,
+          "cacheWrite": 0.00710625,
+          "total": 0.01465925
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "command_test_future",
+      "type": "read-only",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4753.864625000002,
+        "submitToFirstToolCall": 3072.5729589999974,
+        "submitToFirstToolResult": 3168.535208999994,
+        "submitToFirstUsefulFileReference": 3168.7167499999923,
+        "taskCompletion": 6675.054084000003,
+        "cumulativeToolWait": 27.671624999988126
+      },
+      "counts": {
+        "events": 34,
+        "toolCalls": 1,
+        "textDeltas": 5,
+        "precogEvents": 9,
+        "precogInjected": 0,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1,
+        "precogToolCacheHits": 1,
+        "precogToolCacheMisses": 0
+      },
+      "usage": {
+        "seen": 2,
+        "input": 7,
+        "output": 225,
+        "cacheRead": 5084,
+        "cacheWrite": 1135,
+        "cost": {
+          "input": 3.5000000000000004e-05,
+          "output": 0.005625000000000001,
+          "cacheRead": 0.002542,
+          "cacheWrite": 0.007093750000000001,
+          "total": 0.01529575
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "command_test_future",
+      "type": "read-only",
+      "runIndex": 2,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 21902.968542000002,
+        "submitToFirstToolCall": 4108.132791999989,
+        "submitToFirstToolResult": 19756.543334,
+        "submitToFirstUsefulFileReference": 19757.044167,
+        "taskCompletion": 23823.686833999993,
+        "cumulativeToolWait": 15578.978459000005
+      },
+      "counts": {
+        "events": 40,
+        "toolCalls": 1,
+        "textDeltas": 5,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0,
+        "precogToolCacheHits": 0,
+        "precogToolCacheMisses": 0
+      },
+      "usage": {
+        "seen": 2,
+        "input": 7,
+        "output": 237,
+        "cacheRead": 5085,
+        "cacheWrite": 1134,
+        "cost": {
+          "input": 3.5000000000000004e-05,
+          "output": 0.005925,
+          "cacheRead": 0.0025424999999999996,
+          "cacheWrite": 0.0070875,
+          "total": 0.01559
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "off",
+      "workload": "command_test_future",
+      "type": "read-only",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 20072.201708000008,
+        "submitToFirstToolCall": 2995.885208000007,
+        "submitToFirstToolResult": 18271.08575,
+        "submitToFirstUsefulFileReference": 18271.08575,
+        "taskCompletion": 21591.646833000006,
+        "cumulativeToolWait": 15212.286041999992
+      },
+      "counts": {
+        "events": 34,
+        "toolCalls": 1,
+        "textDeltas": 4,
+        "precogEvents": 0,
+        "precogInjected": 0,
+        "precogWarmGhost": 0,
+        "precogWarmRead": 0,
+        "precogToolCacheHits": 0,
+        "precogToolCacheMisses": 0
+      },
+      "usage": {
+        "seen": 2,
+        "input": 7,
+        "output": 213,
+        "cacheRead": 5085,
+        "cacheWrite": 1134,
+        "cost": {
+          "input": 3.5000000000000004e-05,
+          "output": 0.005325,
+          "cacheRead": 0.0025424999999999996,
+          "cacheWrite": 0.0070875,
+          "total": 0.01499
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    },
+    {
+      "arm": "default",
+      "workload": "command_test_future",
+      "type": "read-only",
+      "runIndex": 3,
+      "cwd": "[redacted tmp dir]",
+      "exitCode": 0,
+      "timedOut": false,
+      "metricsMs": {
+        "submitToFirstToken": 4371.937000000005,
+        "submitToFirstToolCall": 2837.8137910000223,
+        "submitToFirstToolResult": 2934.264208000008,
+        "submitToFirstUsefulFileReference": 2934.5722499999974,
+        "taskCompletion": 6591.6880830000155,
+        "cumulativeToolWait": 33.4979170000006
+      },
+      "counts": {
+        "events": 35,
+        "toolCalls": 1,
+        "textDeltas": 6,
+        "precogEvents": 9,
+        "precogInjected": 0,
+        "precogWarmGhost": 1,
+        "precogWarmRead": 1,
+        "precogToolCacheHits": 1,
+        "precogToolCacheMisses": 0
+      },
+      "usage": {
+        "seen": 2,
+        "input": 7,
+        "output": 235,
+        "cacheRead": 5084,
+        "cacheWrite": 1134,
+        "cost": {
+          "input": 3.5000000000000004e-05,
+          "output": 0.005875,
+          "cacheRead": 0.002542,
+          "cacheWrite": 0.007087500000000001,
+          "total": 0.015539500000000001
+        }
+      },
+      "postCheck": {
+        "required": false
+      },
+      "rawPreview": "[trimmed for public artifact]"
+    }
+  ],
+  "summary": [
+    {
+      "workload": "command_test_future",
+      "submitToFirstToken": {
+        "defaultMs": 4469.40625,
+        "offMs": 20436.677666999996,
+        "defaultP95Ms": 4753.864625000002,
+        "offP95Ms": 21902.968542000002,
+        "deltaMs": -15967.271416999996,
+        "speedup": 4.57257105840401,
+        "pairedDeltaSavedMs": {
+          "n": 3,
+          "median": 15967.271416999996,
+          "low": 15700.264708000002,
+          "high": 17149.103917
+        }
+      },
+      "submitToFirstToolCall": {
+        "defaultMs": 3067.408958,
+        "offMs": 3034.8023749999993,
+        "defaultP95Ms": 3072.5729589999974,
+        "offP95Ms": 4108.132791999989,
+        "deltaMs": 32.60658300000068,
+        "speedup": 0.9893699915966664,
+        "pairedDeltaSavedMs": {
+          "n": 3,
+          "median": 158.07141699998465,
+          "low": -32.60658300000068,
+          "high": 1035.559832999992
+        }
+      },
+      "submitToFirstToolResult": {
+        "defaultMs": 3158.216457999999,
+        "offMs": 18365.392249999997,
+        "defaultP95Ms": 3168.535208999994,
+        "offP95Ms": 19756.543334,
+        "deltaMs": -15207.175791999998,
+        "speedup": 5.815115111403806,
+        "pairedDeltaSavedMs": {
+          "n": 3,
+          "median": 15336.82154199999,
+          "low": 15207.175791999998,
+          "high": 16588.008125000008
+        }
+      },
+      "submitToFirstUsefulFileReference": {
+        "defaultMs": 3158.6672499999986,
+        "offMs": 18365.392249999997,
+        "defaultP95Ms": 3168.7167499999923,
+        "offP95Ms": 19757.044167,
+        "deltaMs": -15206.724999999999,
+        "speedup": 5.814285202089586,
+        "pairedDeltaSavedMs": {
+          "n": 3,
+          "median": 15336.513500000001,
+          "low": 15206.724999999999,
+          "high": 16588.327417000008
+        }
+      },
+      "taskCompletion": {
+        "defaultMs": 6591.6880830000155,
+        "offMs": 21910.579250000003,
+        "defaultP95Ms": 6675.054084000003,
+        "offP95Ms": 23823.686833999993,
+        "deltaMs": -15318.891166999987,
+        "speedup": 3.3239708818303244,
+        "pairedDeltaSavedMs": {
+          "n": 3,
+          "median": 15789.543375000001,
+          "low": 14999.95874999999,
+          "high": 17148.63274999999
+        }
+      },
+      "cumulativeToolWait": {
+        "defaultMs": 29.157499999997526,
+        "offMs": 15234.695624999997,
+        "defaultP95Ms": 33.4979170000006,
+        "offP95Ms": 15578.978459000005,
+        "deltaMs": -15205.538125,
+        "speedup": 522.4966346566506,
+        "pairedDeltaSavedMs": {
+          "n": 3,
+          "median": 15205.538125,
+          "low": 15178.788124999992,
+          "high": 15551.306834000017
+        }
+      },
+      "quality": {
+        "defaultPostPassRate": null,
+        "offPostPassRate": null,
+        "defaultTimeouts": 0,
+        "offTimeouts": 0,
+        "defaultPrecogInjected": 0,
+        "defaultToolCacheHits": 3,
+        "defaultToolCacheMisses": 0
+      },
+      "usage": {
+        "defaultTotalCostUsd": 0.04642,
+        "offTotalCostUsd": 0.045239249999999995,
+        "defaultCacheReadTokens": 15255,
+        "offCacheReadTokens": 15256,
+        "defaultCacheWriteTokens": 3406,
+        "offCacheWriteTokens": 3405
+      }
+    }
+  ],
+  "global": {
+    "winRates": {
+      "submitToFirstToken": 1,
+      "submitToFirstToolCall": 0.6666666666666666,
+      "submitToFirstToolResult": 1,
+      "submitToFirstUsefulFileReference": 1,
+      "taskCompletion": 1
+    },
+    "avgCompletionMs": {
+      "default": 6462.592680666673,
+      "off": 22441.970972333336
+    },
+    "passRate": {
+      "default": null,
+      "off": null
+    },
+    "timeouts": {
+      "default": 0,
+      "off": 0
+    },
+    "pairedDeltas": {
+      "taskCompletionSavedMs": {
+        "n": 3,
+        "median": 15789.543375000001,
+        "low": 14999.95874999999,
+        "high": 17148.63274999999
+      },
+      "firstTokenSavedMs": {
+        "n": 3,
+        "median": 15967.271416999996,
+        "low": 15700.264708000002,
+        "high": 17149.103917
+      },
+      "firstToolResultSavedMs": {
+        "n": 3,
+        "median": 15336.82154199999,
+        "low": 15207.175791999998,
+        "high": 16588.008125000008
+      },
+      "firstUsefulFileSavedMs": {
+        "n": 3,
+        "median": 15336.513500000001,
+        "low": 15206.724999999999,
+        "high": 16588.327417000008
+      },
+      "cumulativeToolWaitSavedMs": {
+        "n": 3,
+        "median": 15205.538125,
+        "low": 15178.788124999992,
+        "high": 15551.306834000017
+      }
+    },
+    "usage": {
+      "defaultTotalCostUsd": 0.04642,
+      "offTotalCostUsd": 0.045239249999999995,
+      "defaultCacheReadTokens": 15255,
+      "offCacheReadTokens": 15256,
+      "defaultCacheWriteTokens": 3406,
+      "offCacheWriteTokens": 3405
+    }
+  }
+}

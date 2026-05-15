@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# pi-precognition demo — recreates the headline benchmark in 18 seconds
+# pi-precognition demo — visual replay of the headline benchmark in ~18 seconds
+# NOTE: this is a SCRIPTED ANIMATION, not a live measurement.
+# The numbers are loaded from validation/precog_live_ab_2026-05-15T05-57-56-215Z.md (n=3 paired live).
 # Numbers from validation/precog_live_ab_2026-05-15T05-57-56-215Z.md (n=3)
 
 set -e
@@ -20,7 +22,7 @@ clear
 
 echo "${DIM}\$${RESET} ${BOLD}pi install npm:pi-precognition${RESET}"
 sleep 0.4
-echo "${GREEN}✓${RESET} installed ${BOLD}pi-precognition@0.1.0${RESET} ${DIM}(silent-futures mode)${RESET}"
+echo "${GREEN}✓${RESET} installed ${BOLD}pi-precognition@0.2.0${RESET} ${DIM}(silent-futures mode)${RESET}"
 echo
 sleep 0.3
 

@@ -147,7 +147,13 @@ Not yet proven:
 
 ## Artifact index
 
-Public artifacts (referenced above) are not yet bundled into this npm package; they live in the development lab and are linked from the GitHub repo for now. The `pi-precognition bench` CLI in v0.3 will produce these artifacts directly.
+The headline live A/B results live in the GitHub repo at:
+- [`validation/precog_live_ab_2026-05-15T05-57-56-215Z.md`](../validation/precog_live_ab_2026-05-15T05-57-56-215Z.md) — the 15-second slow-command run (n=3)
+- [`validation/precog_live_ab_2026-05-15T03-08-38-018Z.md`](../validation/precog_live_ab_2026-05-15T03-08-38-018Z.md) — the 15-paired mixed workload run
+
+Each `.md` file is accompanied by a `.json` with the per-run raw metrics (model output text trimmed for public artifact size). Artifacts are not bundled into the npm package; they live in source control to keep the package install lean.
+
+The `pi-precognition bench` CLI in v0.3 will produce fresh artifacts directly on the operator's machine.
 
 ## Honest summary
 

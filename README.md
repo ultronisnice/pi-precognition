@@ -19,7 +19,7 @@
 
 Validated tool futures for Pi coding agents. `pi-precognition` warms safe file, search, git, test, and typecheck results before the model waits for them — then serves only explicitly requested futures whose causal fingerprints still match.
 
-It does not predict answers. It does not change the model-facing tool surface. It does not inject hidden context. It just makes the first wait disappear, safely.
+It does not predict answers. In its default `silent-futures` mode it injects no hidden context. When tool-cache mode is on it transparently wraps Pi's `read`, `bash`, and `grep` tools — preserving their model-facing schemas and descriptions byte-for-byte — and adds a small `precognition_peek` diagnostic tool. The wait disappears; the model's tool contract does not change.
 
 ## The number
 
@@ -44,7 +44,7 @@ Tool execution can dominate agent latency. PASTE ([arXiv:2603.18897](https://arx
 > PASTE speculates **while the model is thinking.**
 > `pi-precognition` speculates **while the operator is typing.**
 
-The two approaches compose. The package never executes speculative tool calls — it caches results the model **explicitly** requests, with causal-fingerprint validation before serve.
+The two approaches compose. The package runs an allowlisted set of read-only commands (`npm test`, `npm run typecheck`, `git status`, `ls`, etc.) during operator-draft time to *warm* their results. It does **not** speculatively execute mutating actions, and it does **not** auto-decide which tool the model will call next. The model still drives every served tool call; we just had the result ready, fingerprint-validated, when it asked.
 
 ## Install
 
@@ -78,14 +78,40 @@ The primitive is one sentence:
 
 > Predict the wait, not the answer.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A["operator typing"] --> B["draft observer"]
+    B --> C["read-only file futures"]
+    B --> D["allowlisted command futures"]
+    B --> E["evidence + intent tags"]
+    C --> F[("warmed cache")]
+    D --> F
+    F --> G["wrapped read/bash/grep tools"]
+    H["model"] -.->|"calls tool"| G
+    G --> I{"causal fingerprint validates?"}
+    I -->|"yes"| J["return warmed result (≈0 wait)"]
+    I -->|"no"| K["fall through to real Pi tool"]
+    J --> H
+    K --> H
+```
+
+Five things compose:
+1. **Draft observer** — debounced terminal-input hook (~50 ms in-memory analysis)
+2. **Read-only futures** — repo-local file warms, secret-denylisted
+3. **Command futures** — 13 allowlisted bash classes (`npm test`, `tsc --noEmit`, `git status`, ...), each with a class-specific causal fingerprint
+4. **Wrapped tools** — `read`/`bash`/`grep` execute path with identical model-facing contract; cache lookup → causal validation → serve-or-fallthrough
+5. **Hard off switch** — `PI_PRECOG=0` makes the entire extension a no-op
+
 ## What it does not do
 
-- Never predicts what the model will say.
-- Never executes speculative `bash` commands outside an explicit allowlist.
-- Never mutates workspace state.
-- Never serves a stale future. Every cache hit re-validates against current workspace state.
-- Never reads `.env`, secrets, SSH config, AWS credentials, Docker auth, or any path matching the secret denylist (see [`docs/safety-model.md`](docs/safety-model.md)).
-- Never escapes the working repo.
+- Does not predict what the model will say. The model still emits every tool call and every response.
+- Does not execute mutating actions speculatively. Reads, status probes, and an allowlisted set of read-only commands only.
+- Does not mutate workspace state. Ever.
+- Does not serve a stale future. Every cache hit re-validates against current workspace state (file mtime/size for reads; per-class causal fingerprint for fingerprinted commands; TTL for fast probes like `git status`).
+- Does not read `.env`, secrets, SSH config, AWS credentials, Docker auth, or any path matching the secret denylist (see [`docs/safety-model.md`](docs/safety-model.md)).
+- Does not escape the working repo (realpath containment after symlink resolution).
 
 ## Safety
 
@@ -117,11 +143,10 @@ The package is designed so that if you find a path that violates any invariant a
 git clone https://github.com/ultronisnice/pi-precognition.git
 cd pi-precognition
 npm install
-npm test           # 52 tests, all five injection modes, ~3s
+npm test                # 52 tests, all five injection modes, ~3s
 npm run typecheck
-
-# Replay the headline number locally (no API calls)
-bash docs/demo.sh
+npm run bench:local     # same as test — local microbenchmark + safety gates
+npm run demo:visual     # ~18s scripted animation of the headline numbers (NOT a live run)
 ```
 
 Live-API benchmark replay is being extracted into a `pi-precognition bench` CLI for the v0.3 release.

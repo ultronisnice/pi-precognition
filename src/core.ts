@@ -1373,9 +1373,12 @@ function formatVerifiedFutures(tools: GhostToolResult[]): string {
 }
 
 function injectionMode(): "full" | "cache-index" | "verified-futures" | "silent-futures" {
-	if (process.env.PI_PRECOG_INJECTION_MODE === "silent-futures") return "silent-futures";
+	// Default is silent-futures: zero hidden context. The README's
+	// "hidden context injected: 0" claim is true with no env set.
+	if (process.env.PI_PRECOG_INJECTION_MODE === "full") return "full";
+	if (process.env.PI_PRECOG_INJECTION_MODE === "cache-index") return "cache-index";
 	if (process.env.PI_PRECOG_INJECTION_MODE === "verified-futures") return "verified-futures";
-	return process.env.PI_PRECOG_INJECTION_MODE === "cache-index" ? "cache-index" : "full";
+	return "silent-futures";
 }
 
 function normalizePathToken(token: string): string | undefined {
