@@ -1,10 +1,29 @@
 # pi-precognition
 
-**A personal anticipation engine for long, deep coding work.**
+<p align="center">
+  <strong>A personal anticipation engine for long, deep coding work.</strong>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/pi-precognition"><img alt="npm" src="https://img.shields.io/npm/v/pi-precognition?color=cb3837&label=npm"></a>
+  <a href="https://github.com/ultronisnice/pi-precognition/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-green.svg"></a>
+  <a href="https://github.com/ultronisnice/pi-precognition/releases/tag/v0.3.0"><img alt="release" src="https://img.shields.io/badge/release-v0.3.0-1a73e8"></a>
+  <img alt="pi-package" src="https://img.shields.io/badge/pi--package-extension-7c3aed">
+  <img alt="tests" src="https://img.shields.io/badge/tests-82%2F82-22c55e">
+  <img alt="status" src="https://img.shields.io/badge/status-research--backed-1a73e8">
+</p>
+
+<p align="center">
+  <img src="docs/demo.gif" alt="pi-precognition headline demo: a 15-second npm test served in 29ms through wrapped Pi-compatible tools" width="100%">
+</p>
+
+---
 
 v0.3 ships the core substrate for **persistent, cross-session personal anticipation** — the foundation that lets an agent learn how *you* actually work and start reducing the repetitive friction in your workflow.
 
 This is the first release where the system moves beyond local, session-scoped guessing into durable, learnable patterns that survive across restarts and projects.
+
+→ **[Install](#install)** · **[Reproduce](challenges/003-reproduce-the-baseline.md)** · **[Build a future](docs/build-a-future.md)**
 
 ---
 
@@ -34,6 +53,24 @@ If you mostly do short sessions or constantly jump between unrelated tasks, the 
 
 ---
 
+## The Headline Number
+
+On the slow-command workload (a `bash("npm test")` that takes 15 seconds, with 17s of draft budget), `pi-precognition` drops the blocked tool wait from **15.2 seconds to 29 milliseconds** — a **522× collapse** of the dominant latency cost.
+
+| Metric | Baseline | With `pi-precognition` | Speedup |
+|---|---:|---:|---:|
+| Blocked tool wait | 15,234 ms | 29 ms | **522×** |
+| First tool result | 18.4 s | 3.2 s | **5.8×** |
+| Task completion | 21.9 s | 6.6 s | **3.3×** |
+| Hidden injections | n/a | 0 | — |
+| Quality parity | n/a | 100% | — |
+
+**n=3 paired live runs. Boundary: deterministic-class agent turns only.** See [`docs/benchmarks.md`](docs/benchmarks.md) for the full methodology and the workload class breakdown.
+
+v0.3 adds 30 paired-benchmark samples across 3 real projects. See [`validation/v0.3-evidence-report.md`](validation/v0.3-evidence-report.md).
+
+---
+
 ## What Shipped in v0.3
 
 - Persistent Pattern Library with cross-session and cross-project storage
@@ -46,6 +83,29 @@ If you mostly do short sessions or constantly jump between unrelated tasks, the 
 - Full documentation and examples (including Rust cargo support)
 
 The full release evidence and receipts are in the repo.
+
+---
+
+## Install
+
+```bash
+pi install npm:pi-precognition
+```
+
+Recommended environment (safest defaults):
+
+```bash
+PI_PRECOG=1
+PI_PRECOG_TOOL_CACHE=1
+PI_PRECOG_COMMAND_FUTURES=1
+PI_PRECOG_INJECTION_MODE=silent-futures
+```
+
+Hard off switch:
+
+```bash
+PI_PRECOG=0
+```
 
 ---
 
@@ -74,27 +134,6 @@ v0.3 is the substrate. v0.4 is when the model starts earning the right to steer.
 
 ---
 
-## Status
-
-- 82/82 tests passing
-- Typecheck clean
-- Clean history with full receipts
-- v0.3.0 tag published
-
-This is the foundation release. The real compounding power will grow as usage data and new future classes flow back into the system.
-
----
-
-## Install
-
-```bash
-pi install npm:pi-precognition
-```
-
-Recommended environment variables and the hard off switch are documented in the repo.
-
----
-
 ## Safety
 
 The v0.2 safety invariants are preserved as a strict superset:
@@ -106,6 +145,17 @@ The v0.2 safety invariants are preserved as a strict superset:
 - **Hard off switch** — `PI_PRECOG=0` makes the entire extension a no-op.
 
 See [`docs/safety-model.md`](docs/safety-model.md) for the full invariant list. Any path that violates an invariant is a release-blocking bug.
+
+---
+
+## Status
+
+- 82/82 tests passing
+- Typecheck clean
+- Clean history with full receipts
+- v0.3.0 tag published
+
+This is the foundation release. The real compounding power will grow as usage data and new future classes flow back into the system.
 
 ---
 
