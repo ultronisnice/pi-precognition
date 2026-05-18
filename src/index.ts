@@ -14,6 +14,9 @@
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { applyCacheDelay } from "./cache-delay.ts";
+import { observePattern, recordFutureOutcome } from "./pattern-library.ts";
+import { applyPlanToEvidence, planAnticipation } from "./anticipation-planner.ts";
+import { createMutationStream, recordMutationSnapshot, evaluateExpensiveFutures, type MutationStream, type MutationEvent } from "./mutation-stream.ts";
 import { exec } from "node:child_process";
 import { performance } from "node:perf_hooks";
 import { access, readFile, stat } from "node:fs/promises";
@@ -57,6 +60,10 @@ let pendingWarm = false;
 let latestCtx: any;
 let snapshotRefresh: Promise<void> | undefined;
 let delayedSnapshotTimer: ReturnType<typeof setTimeout> | undefined;
+let mutationStream: MutationStream | undefined;
+let lastMutationEvent: MutationEvent | undefined;
+let mutationTickTimer: ReturnType<typeof setInterval> | undefined;
+
 
 export default function piPrecognition(pi: ExtensionAPI): void {
 	if (process.env.PI_PRECOG === "0" || process.env.PI_PRECOG === "false") return;
@@ -103,6 +110,21 @@ export default function piPrecognition(pi: ExtensionAPI): void {
 			});
 		}
 		snapshotRefresh = refreshGitSnapshot(STATE, cwd).catch(() => undefined);
+		mutationStream = createMutationStream(cwd);
+		lastMutationEvent = undefined;
+		if (mutationTickTimer) clearInterval(mutationTickTimer);
+		mutationTickTimer = setInterval(() => {
+			void (async () => {
+				try {
+					if (!mutationStream) return;
+					lastMutationEvent = await recordMutationSnapshot(mutationStream);
+					if (!lastMutationEvent.added.length && !lastMutationEvent.modified.length && !lastMutationEvent.removed.length) return;
+					const verdict = await evaluateExpensiveFutures(cwd, lastMutationEvent);
+					void debugLog({ event: "mutation_tick", armed: verdict.armed, rejected: verdict.rejected });
+				} catch { /* mutation tick never blocks UI */ }
+			})();
+		}, Number(process.env.PI_PRECOG_MUTATION_TICK_MS ?? 6_000));
+		mutationTickTimer.unref?.();
 		const primeDraft = String(process.env.PI_PRECOG_PRIME_DRAFT ?? "");
 		if (primeDraft.trim()) {
 			await Promise.race([
@@ -141,6 +163,10 @@ export default function piPrecognition(pi: ExtensionAPI): void {
 			injected: Boolean(message),
 			chars: STATE.stats.lastInjectionChars,
 		});
+		if (STATE.evidence) {
+			const cwd = String(latestCtx?.cwd ?? process.cwd());
+			void observePattern(cwd, { evidence: STATE.evidence, ghostTools: STATE.ghostTools, reason: "before_agent_start" }).catch(() => undefined);
+		}
 		if (message) return { message };
 		return undefined;
 	});
@@ -155,8 +181,12 @@ export default function piPrecognition(pi: ExtensionAPI): void {
 		unsubscribeInput = undefined;
 			if (pendingTimer) clearTimeout(pendingTimer);
 			if (delayedSnapshotTimer) clearTimeout(delayedSnapshotTimer);
+			if (mutationTickTimer) clearInterval(mutationTickTimer);
 			pendingTimer = undefined;
 			delayedSnapshotTimer = undefined;
+			mutationTickTimer = undefined;
+			mutationStream = undefined;
+			lastMutationEvent = undefined;
 			pendingWarm = false;
 			void debugLog({ event: "session_shutdown" });
 		});
@@ -186,10 +216,21 @@ function scheduleObserve(ctx: any): void {
 		});
 		if (!pendingWarm && evidence?.confidence && evidence.confidence >= 0.25) {
 			pendingWarm = true;
-			void warmReadOnlyEvidence(STATE, ctx?.cwd ?? process.cwd(), evidence).catch(() => undefined).finally(() => {
-				pendingWarm = false;
-			});
-			void warmGhostTools(STATE, ctx?.cwd ?? process.cwd(), evidence).catch(() => undefined);
+			const cwd = ctx?.cwd ?? process.cwd();
+			void (async () => {
+				try {
+					const plan = await Promise.race([
+						planAnticipation(cwd, evidence, lastMutationEvent),
+						delay(Number(process.env.PI_PRECOG_PLAN_BUDGET_MS ?? 40)).then(() => undefined),
+					]).catch(() => undefined);
+					const boosted = plan ? (applyPlanToEvidence(evidence, plan) ?? evidence) : evidence;
+					await warmReadOnlyEvidence(STATE, cwd, boosted).catch(() => undefined);
+					await warmGhostTools(STATE, cwd, boosted).catch(() => undefined);
+					await observePattern(cwd, { evidence: boosted, ghostTools: STATE.ghostTools }).catch(() => undefined);
+				} finally {
+					pendingWarm = false;
+				}
+			})();
 		}
 	}, Number(process.env.PI_PRECOG_DEBOUNCE_MS ?? 50));
 	pendingTimer.unref?.();
@@ -209,17 +250,25 @@ async function primeDraftFutures(cwd: string, draft: string): Promise<void> {
 			delay(Number(process.env.PI_PRECOG_SNAPSHOT_BUDGET_MS ?? 80)),
 		]);
 	}
-	const evidence = observeDraft(STATE, draft);
-	if (!evidence?.confidence || evidence.confidence < 0.25) return;
+	const rawEvidence = observeDraft(STATE, draft);
+	if (!rawEvidence?.confidence || rawEvidence.confidence < 0.25) return;
+	// Anticipation Planner — library-driven boost. Bounded budget; never throws.
+	const plan = await Promise.race([
+		planAnticipation(cwd, rawEvidence, lastMutationEvent),
+		delay(Number(process.env.PI_PRECOG_PLAN_BUDGET_MS ?? 40)).then(() => undefined),
+	]).catch(() => undefined);
+	const evidence = plan ? (applyPlanToEvidence(rawEvidence, plan) ?? rawEvidence) : rawEvidence;
 	await Promise.allSettled([
 		warmReadOnlyEvidence(STATE, cwd, evidence),
 		warmGhostTools(STATE, cwd, evidence),
 	]);
+	await observePattern(cwd, { evidence, ghostTools: STATE.ghostTools }).catch(() => undefined);
 	await debugLog({
 		event: "prime_draft_futures",
 		promptHash: evidence.draftHash,
 		warmedFiles: STATE.warmedFiles.length,
 		ghostTools: STATE.ghostTools.length,
+		plan: plan ? { boosted: plan.boostedRefs.length, armed: plan.armedKeys.length, suppressed: plan.suppressedKeys.length, ms: Math.round(plan.elapsedMs) } : undefined,
 	});
 }
 
@@ -239,6 +288,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = tryGhostToolCache(STATE, "read", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "read", mode: "stable-contract", key: hit.details.precogKey });
+				void recordFutureOutcome(cwd, String(hit.details.precogKey ?? "read"), "hit", { savedMs: 50 }).catch(() => undefined);
 				const hitStart = performance.now();
 				await applyCacheDelay("read");
 				const servedMs = performance.now() - hitStart;
@@ -250,6 +300,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "read" });
+			void recordFutureOutcome(cwd, `read:${String(params?.path ?? "")}`, "miss", { reason: "fallback" }).catch(() => undefined);
 			return fallbackRead(cwd, params);
 		},
 	});
@@ -267,6 +318,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = await tryGhostToolCacheAsync(STATE, "bash", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "bash", mode: "stable-contract", key: hit.details.precogKey });
+				void recordFutureOutcome(cwd, String(hit.details.precogKey ?? "bash"), "hit", { savedMs: 15000 }).catch(() => undefined);
 				const hitStart = performance.now();
 				await applyCacheDelay("bash");
 				const servedMs = performance.now() - hitStart;
@@ -279,6 +331,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "bash" });
+			void recordFutureOutcome(cwd, String(params?.command ?? "bash"), "miss", { reason: "fallback" }).catch(() => undefined);
 			return fallbackBash(cwd, params);
 		},
 	});
@@ -301,6 +354,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 			const hit = tryGhostToolCache(STATE, "grep", params);
 			if (hit) {
 				void debugLog({ event: "tool_cache_hit", tool: "grep", mode: "stable-contract", key: hit.details.precogKey });
+				void recordFutureOutcome(cwd, String(hit.details.precogKey ?? "grep"), "hit", { savedMs: 250 }).catch(() => undefined);
 				const hitStart = performance.now();
 				await applyCacheDelay("grep");
 				const servedMs = performance.now() - hitStart;
@@ -312,6 +366,7 @@ function registerCachedToolOverrides(pi: ExtensionAPI, cwd: string): void {
 				return hit;
 			}
 			void debugLog({ event: "tool_cache_miss", tool: "grep" });
+			void recordFutureOutcome(cwd, `rg_literal:${String(params?.pattern ?? "")}`, "miss", { reason: "fallback" }).catch(() => undefined);
 			return fallbackGrep(cwd, params);
 		},
 	});
