@@ -1,7 +1,7 @@
 # pi-precognition
 
 <p align="center">
-  <strong>A personal anticipation engine for long, deep coding work.</strong>
+  <strong>Coding agents that wait less the longer they run.</strong>
 </p>
 
 <p align="center">
@@ -24,6 +24,12 @@ v0.3 ships the core substrate for **persistent, cross-session personal anticipat
 This is the first release where the system moves beyond local, session-scoped guessing into durable, learnable patterns that survive across restarts and projects.
 
 → **[Install](#install)** · **[Reproduce](challenges/003-reproduce-the-baseline.md)** · **[Build a future](docs/build-a-future.md)**
+
+---
+
+## Why now
+
+For many coding-agent workflows, tool execution — not model inference — is the largest source of perceptible latency. v0.2 proved that *some* of that wait is avoidable by warming safe futures while the operator drafts: a 15-second `npm test` served in 29 ms through wrapped Pi-compatible tools, zero hidden context injection. v0.3 extends that proof across sessions: the model of *what's likely to matter* now persists, so the system gets steadily better at the work *you* actually do.
 
 ---
 
@@ -109,18 +115,16 @@ PI_PRECOG=0
 
 ---
 
-## Build the Next Layer
+## First Wave
 
-v0.3 gives you the tools to extend the system yourself.
+The Future Compose API is first-class in v0.3. Anyone can register a new future class — usually around 30 lines plus a fingerprint test — for a language or workflow that isn't covered yet, or for something specific to how *you* work.
 
-The Future Compose API is now first-class. If you work in a language or workflow that isn't covered yet (or want to optimize something specific to how *you* work), you can add your own future class.
+Future classes shipped during the v0.3 window land on the permanent contributor record. No bounties, no contest. The point isn't to win — it's to be one of the people who showed up while the substrate was still soft, and to have your name on the future class that proved a workflow worked.
 
-We're deliberately opening this up early. The more high-quality future classes exist, the more useful the system becomes for everyone.
+If you ship one with real receipts before the window closes, it becomes part of how this thing actually grew.
 
-→ [Build a Future](docs/build-a-future.md)
-→ [Current open slots & leaderboard](challenges/leaderboard.md)
-
-If you ship something real with receipts during this window, it becomes part of the early record of how this thing grew.
+→ [Build a Future](docs/build-a-future.md) — anatomy of a future class, 30-line template, safety checklist
+→ [Current open slots & leaderboard](challenges/leaderboard.md) — what's open, what's been shipped
 
 ---
 
