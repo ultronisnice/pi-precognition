@@ -1,0 +1,9 @@
+{
+  "name": "pi-precognition-slow-command-example",
+  "version": "0.1.0",
+  "description": "The workload behind the 15.2s -> 29ms headline. Run `npm test` to feel the cold baseline.",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "private": true
+}
