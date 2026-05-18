@@ -2,3 +2,7 @@ node_modules/
 *.tgz
 ULTRON_10_10_DROP_PLAN.md
 ULTRON_FRONT_PAGE_STRATEGY.md
+
+# Runtime state (per-cwd; not part of the published package)
+.crew/
+.pi-precognition/
