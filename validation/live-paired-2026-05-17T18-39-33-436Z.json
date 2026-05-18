@@ -1,0 +1,970 @@
+{
+  "generatedAt": "2026-05-17T18:37:46.611Z",
+  "version": "0.3.0",
+  "cwd": "<repo>",
+  "paired": true,
+  "iterations": 5,
+  "workloads": [
+    {
+      "name": "slow-command",
+      "future": {
+        "tool": "bash",
+        "command": "npm test",
+        "classKey": "bash:npm test"
+      },
+      "samples": [
+        {
+          "iteration": 1,
+          "off": {
+            "firstWaitMs": 6495.169
+          },
+          "on": {
+            "commitWaitMs": 761.982,
+            "warmMs": 10802.037,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.5839589999995951,
+              "lastAnalyzeMs": 0.5839589999995951,
+              "maxAnalyzeMs": 0.5839589999995951,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 1.984082999999373,
+              "maxPrefetchMs": 1.984082999999373,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 5540.700999999999,
+              "maxGhostToolMs": 5540.700999999999,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.5839589999995951,
+              "evidence": {
+                "draftHash": "c9ea7d65",
+                "createdAt": 1779043073120,
+                "refs": [
+                  "examples/slow-command/test.js"
+                ],
+                "changed": [],
+                "intentTags": [
+                  "test",
+                  "debug"
+                ],
+                "observations": [
+                  "draft mentions paths: examples/slow-command/test.js",
+                  "intent words observed: test, debug"
+                ],
+                "summary": "draft mentions paths: examples/slow-command/test.js; intent words observed: test, debug",
+                "confidence": 0.41,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [
+                {
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043073123
+                }
+              ],
+              "ghostTools": [
+                {
+                  "name": "read",
+                  "key": "read:examples/slow-command/test.js",
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043073121
+                },
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043073134
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043073146
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm test",
+                  "bytes": 2458,
+                  "collectedAt": 1779043078629
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git status",
+                  "bytes": 1039,
+                  "collectedAt": 1779043078650
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git diff",
+                  "bytes": 287,
+                  "collectedAt": 1779043078661
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043073120,
+                "source": "git"
+              }
+            }
+          }
+        },
+        {
+          "iteration": 2,
+          "off": {
+            "firstWaitMs": 5170.373
+          },
+          "on": {
+            "commitWaitMs": 761.199,
+            "warmMs": 10814.466,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.2982090000004973,
+              "lastAnalyzeMs": 0.2982090000004973,
+              "maxAnalyzeMs": 0.2982090000004973,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.8606660000004922,
+              "maxPrefetchMs": 0.8606660000004922,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 5583.1652079999985,
+              "maxGhostToolMs": 5583.1652079999985,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.2982090000004973,
+              "evidence": {
+                "draftHash": "c9ea7d65",
+                "createdAt": 1779043089853,
+                "refs": [
+                  "examples/slow-command/test.js"
+                ],
+                "changed": [],
+                "intentTags": [
+                  "test",
+                  "debug"
+                ],
+                "observations": [
+                  "draft mentions paths: examples/slow-command/test.js",
+                  "intent words observed: test, debug"
+                ],
+                "summary": "draft mentions paths: examples/slow-command/test.js; intent words observed: test, debug",
+                "confidence": 0.41,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [
+                {
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043089854
+                }
+              ],
+              "ghostTools": [
+                {
+                  "name": "read",
+                  "key": "read:examples/slow-command/test.js",
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043089853
+                },
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043089864
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043089874
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm test",
+                  "bytes": 2458,
+                  "collectedAt": 1779043095403
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git status",
+                  "bytes": 1039,
+                  "collectedAt": 1779043095425
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git diff",
+                  "bytes": 287,
+                  "collectedAt": 1779043095436
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043089853,
+                "source": "git"
+              }
+            }
+          }
+        },
+        {
+          "iteration": 3,
+          "off": {
+            "firstWaitMs": 5168.275
+          },
+          "on": {
+            "commitWaitMs": 761.034,
+            "warmMs": 10557.719,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.08249999999679858,
+              "lastAnalyzeMs": 0.08249999999679858,
+              "maxAnalyzeMs": 0.08249999999679858,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.2212500000023283,
+              "maxPrefetchMs": 0.2212500000023283,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 5307.135958999999,
+              "maxGhostToolMs": 5307.135958999999,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.08249999999679858,
+              "evidence": {
+                "draftHash": "c9ea7d65",
+                "createdAt": 1779043106597,
+                "refs": [
+                  "examples/slow-command/test.js"
+                ],
+                "changed": [],
+                "intentTags": [
+                  "test",
+                  "debug"
+                ],
+                "observations": [
+                  "draft mentions paths: examples/slow-command/test.js",
+                  "intent words observed: test, debug"
+                ],
+                "summary": "draft mentions paths: examples/slow-command/test.js; intent words observed: test, debug",
+                "confidence": 0.41,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [
+                {
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043106597
+                }
+              ],
+              "ghostTools": [
+                {
+                  "name": "read",
+                  "key": "read:examples/slow-command/test.js",
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043106597
+                },
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043106609
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043106619
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm test",
+                  "bytes": 2460,
+                  "collectedAt": 1779043111873
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git status",
+                  "bytes": 1039,
+                  "collectedAt": 1779043111893
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git diff",
+                  "bytes": 287,
+                  "collectedAt": 1779043111904
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043106597,
+                "source": "git"
+              }
+            }
+          }
+        },
+        {
+          "iteration": 4,
+          "off": {
+            "firstWaitMs": 5165.882
+          },
+          "on": {
+            "commitWaitMs": 762.874,
+            "warmMs": 13369.529,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.0655830000032438,
+              "lastAnalyzeMs": 0.0655830000032438,
+              "maxAnalyzeMs": 0.0655830000032438,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.25570799999695737,
+              "maxPrefetchMs": 0.25570799999695737,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 7593.202749999997,
+              "maxGhostToolMs": 7593.202749999997,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.0655830000032438,
+              "evidence": {
+                "draftHash": "c9ea7d65",
+                "createdAt": 1779043123081,
+                "refs": [
+                  "examples/slow-command/test.js"
+                ],
+                "changed": [],
+                "intentTags": [
+                  "test",
+                  "debug"
+                ],
+                "observations": [
+                  "draft mentions paths: examples/slow-command/test.js",
+                  "intent words observed: test, debug"
+                ],
+                "summary": "draft mentions paths: examples/slow-command/test.js; intent words observed: test, debug",
+                "confidence": 0.41,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [
+                {
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043123082
+                }
+              ],
+              "ghostTools": [
+                {
+                  "name": "read",
+                  "key": "read:examples/slow-command/test.js",
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043123082
+                },
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043123092
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043123102
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm test",
+                  "bytes": 2460,
+                  "collectedAt": 1779043130590
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git status",
+                  "bytes": 1039,
+                  "collectedAt": 1779043130646
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git diff",
+                  "bytes": 287,
+                  "collectedAt": 1779043130675
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043123081,
+                "source": "git"
+              }
+            }
+          }
+        },
+        {
+          "iteration": 5,
+          "off": {
+            "firstWaitMs": 5565.916
+          },
+          "on": {
+            "commitWaitMs": 760.61,
+            "warmMs": 10901.795,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.07637500000419095,
+              "lastAnalyzeMs": 0.07637500000419095,
+              "maxAnalyzeMs": 0.07637500000419095,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.5892920000042068,
+              "maxPrefetchMs": 0.5892920000042068,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 5646.327917000002,
+              "maxGhostToolMs": 5646.327917000002,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.07637500000419095,
+              "evidence": {
+                "draftHash": "c9ea7d65",
+                "createdAt": 1779043142785,
+                "refs": [
+                  "examples/slow-command/test.js"
+                ],
+                "changed": [],
+                "intentTags": [
+                  "test",
+                  "debug"
+                ],
+                "observations": [
+                  "draft mentions paths: examples/slow-command/test.js",
+                  "intent words observed: test, debug"
+                ],
+                "summary": "draft mentions paths: examples/slow-command/test.js; intent words observed: test, debug",
+                "confidence": 0.41,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [
+                {
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043142786
+                }
+              ],
+              "ghostTools": [
+                {
+                  "name": "read",
+                  "key": "read:examples/slow-command/test.js",
+                  "path": "examples/slow-command/test.js",
+                  "bytes": 234,
+                  "collectedAt": 1779043142786
+                },
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043142799
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043142811
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm test",
+                  "bytes": 2460,
+                  "collectedAt": 1779043148398
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git status",
+                  "bytes": 1039,
+                  "collectedAt": 1779043148419
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:git diff",
+                  "bytes": 287,
+                  "collectedAt": 1779043148431
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043142785,
+                "source": "git"
+              }
+            }
+          }
+        }
+      ],
+      "summary": {
+        "offAvgMs": 5513.123,
+        "onAvgMs": 761.54,
+        "warmAvgMs": 11289.109,
+        "deltaMs": 4751.583,
+        "cacheHits": 5,
+        "samples": 5
+      }
+    },
+    {
+      "name": "typecheck",
+      "future": {
+        "tool": "bash",
+        "command": "npm run typecheck",
+        "classKey": "bash:npm typecheck"
+      },
+      "samples": [
+        {
+          "iteration": 1,
+          "off": {
+            "firstWaitMs": 962.343
+          },
+          "on": {
+            "commitWaitMs": 761.173,
+            "warmMs": 1811.095,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.08349999999336433,
+              "lastAnalyzeMs": 0.08349999999336433,
+              "maxAnalyzeMs": 0.08349999999336433,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.0015419999981531873,
+              "maxPrefetchMs": 0.0015419999981531873,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 975.3537500000093,
+              "maxGhostToolMs": 975.3537500000093,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.08349999999336433,
+              "evidence": {
+                "draftHash": "7d888ebb",
+                "createdAt": 1779043155406,
+                "refs": [],
+                "changed": [],
+                "intentTags": [
+                  "build"
+                ],
+                "observations": [
+                  "intent words observed: build"
+                ],
+                "summary": "intent words observed: build",
+                "confidence": 0.25,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [],
+              "ghostTools": [
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043155417
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043155428
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm typecheck",
+                  "bytes": 11,
+                  "collectedAt": 1779043156257
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:cat package.json",
+                  "bytes": 1995,
+                  "collectedAt": 1779043156259
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043155406,
+                "source": "git"
+              }
+            }
+          }
+        },
+        {
+          "iteration": 2,
+          "off": {
+            "firstWaitMs": 727.447
+          },
+          "on": {
+            "commitWaitMs": 761.752,
+            "warmMs": 1982.831,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.07345799999893643,
+              "lastAnalyzeMs": 0.07345799999893643,
+              "maxAnalyzeMs": 0.07345799999893643,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.0029999999969732016,
+              "maxPrefetchMs": 0.0029999999969732016,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 982.2783749999944,
+              "maxGhostToolMs": 982.2783749999944,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.07345799999893643,
+              "evidence": {
+                "draftHash": "7d888ebb",
+                "createdAt": 1779043158704,
+                "refs": [],
+                "changed": [],
+                "intentTags": [
+                  "build"
+                ],
+                "observations": [
+                  "intent words observed: build"
+                ],
+                "summary": "intent words observed: build",
+                "confidence": 0.25,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [],
+              "ghostTools": [
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043158715
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043158726
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm typecheck",
+                  "bytes": 11,
+                  "collectedAt": 1779043159563
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:cat package.json",
+                  "bytes": 1995,
+                  "collectedAt": 1779043159565
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043158704,
+                "source": "git"
+              }
+            }
+          }
+        },
+        {
+          "iteration": 3,
+          "off": {
+            "firstWaitMs": 790.021
+          },
+          "on": {
+            "commitWaitMs": 759.959,
+            "warmMs": 1676.16,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.06833300000289455,
+              "lastAnalyzeMs": 0.06833300000289455,
+              "maxAnalyzeMs": 0.06833300000289455,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.000750000006519258,
+              "maxPrefetchMs": 0.000750000006519258,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 898.0683330000029,
+              "maxGhostToolMs": 898.0683330000029,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.06833300000289455,
+              "evidence": {
+                "draftHash": "7d888ebb",
+                "createdAt": 1779043162241,
+                "refs": [],
+                "changed": [],
+                "intentTags": [
+                  "build"
+                ],
+                "observations": [
+                  "intent words observed: build"
+                ],
+                "summary": "intent words observed: build",
+                "confidence": 0.25,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [],
+              "ghostTools": [
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043162252
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043162263
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm typecheck",
+                  "bytes": 11,
+                  "collectedAt": 1779043163015
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:cat package.json",
+                  "bytes": 1995,
+                  "collectedAt": 1779043163017
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043162241,
+                "source": "git"
+              }
+            }
+          }
+        },
+        {
+          "iteration": 4,
+          "off": {
+            "firstWaitMs": 992.541
+          },
+          "on": {
+            "commitWaitMs": 765.874,
+            "warmMs": 2376.286,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.07187500000873115,
+              "lastAnalyzeMs": 0.07187500000873115,
+              "maxAnalyzeMs": 0.07187500000873115,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.0008749999979045242,
+              "maxPrefetchMs": 0.0008749999979045242,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 1276.8974580000067,
+              "maxGhostToolMs": 1276.8974580000067,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.07187500000873115,
+              "evidence": {
+                "draftHash": "7d888ebb",
+                "createdAt": 1779043165674,
+                "refs": [],
+                "changed": [],
+                "intentTags": [
+                  "build"
+                ],
+                "observations": [
+                  "intent words observed: build"
+                ],
+                "summary": "intent words observed: build",
+                "confidence": 0.25,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [],
+              "ghostTools": [
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043165686
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043165696
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm typecheck",
+                  "bytes": 11,
+                  "collectedAt": 1779043166826
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:cat package.json",
+                  "bytes": 1995,
+                  "collectedAt": 1779043166829
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043165674,
+                "source": "git"
+              }
+            }
+          }
+        },
+        {
+          "iteration": 5,
+          "off": {
+            "firstWaitMs": 1512.337
+          },
+          "on": {
+            "commitWaitMs": 761.924,
+            "warmMs": 2362.501,
+            "cacheHit": true,
+            "stats": {
+              "draftsSeen": 1,
+              "analyzed": 1,
+              "duplicateDrafts": 0,
+              "cacheHits": 0,
+              "totalAnalyzeMs": 0.07987499999580905,
+              "lastAnalyzeMs": 0.07987499999580905,
+              "maxAnalyzeMs": 0.07987499999580905,
+              "lastInjectionChars": 0,
+              "snapshotRefreshes": 1,
+              "prefetches": 1,
+              "lastPrefetchMs": 0.0010840000031748787,
+              "maxPrefetchMs": 0.0010840000031748787,
+              "ghostToolWarms": 1,
+              "lastGhostToolMs": 1211.8008750000008,
+              "maxGhostToolMs": 1211.8008750000008,
+              "toolCacheHits": 1,
+              "toolCacheMisses": 0,
+              "avgAnalyzeMs": 0.07987499999580905,
+              "evidence": {
+                "draftHash": "7d888ebb",
+                "createdAt": 1779043170330,
+                "refs": [],
+                "changed": [],
+                "intentTags": [
+                  "build"
+                ],
+                "observations": [
+                  "intent words observed: build"
+                ],
+                "summary": "intent words observed: build",
+                "confidence": 0.25,
+                "snapshotAgeMs": 0,
+                "source": "git"
+              },
+              "warmedFiles": [],
+              "ghostTools": [
+                {
+                  "name": "git_status_short",
+                  "key": "git_status_short:status --short",
+                  "bytes": 1038,
+                  "collectedAt": 1779043170344
+                },
+                {
+                  "name": "git_diff_name_only",
+                  "key": "git_diff_name_only:diff --name-only",
+                  "bytes": 74,
+                  "collectedAt": 1779043170357
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:npm typecheck",
+                  "bytes": 11,
+                  "collectedAt": 1779043171417
+                },
+                {
+                  "name": "bash_command",
+                  "key": "bash:cat package.json",
+                  "bytes": 1995,
+                  "collectedAt": 1779043171420
+                }
+              ],
+              "snapshot": {
+                "cwd": "<repo>",
+                "changedFiles": 30,
+                "knownFiles": 71,
+                "collectedAt": 1779043170330,
+                "source": "git"
+              }
+            }
+          }
+        }
+      ],
+      "summary": {
+        "offAvgMs": 996.938,
+        "onAvgMs": 762.136,
+        "warmAvgMs": 2041.775,
+        "deltaMs": 234.802,
+        "cacheHits": 5,
+        "samples": 5
+      }
+    }
+  ]
+}
