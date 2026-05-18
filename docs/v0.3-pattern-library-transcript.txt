@@ -1,0 +1,7 @@
+Pattern Library · 2 patterns · your-project
+  totals: 3 hits / 8 armed · saved 32.7s
+- test-after-edit · count 3 · conf 0.59 · saved 24.3s · hit-rate 33% (2 of 6 hits) · pi_blitz:edit a3/h0/r0, bash:npm test a3/h2/r0
+  refs: src/cli.ts
+- build/typecheck-preflight · count 2 · conf 0.51 · saved 8.4s · hit-rate 50% (1 of 2 hits) · bash:npm run typecheck a2/h1/r0
+  refs: src/pattern-library.ts
+2:57:39 am · mutation#1 changed=36 +36/-0 ~0 · top=test-after-edit · armed=pi_blitz:edit · saved=0ms
