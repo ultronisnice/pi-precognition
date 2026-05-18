@@ -1,6 +1,6 @@
 {
   "name": "pi-precognition",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Validated tool futures for low-latency Pi coding agents. Predict the wait, not the answer.",
   "author": {
     "name": "ULTRXN",
@@ -45,7 +45,10 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "demo": "bash docs/demo.sh",
     "demo:visual": "bash docs/demo.sh",
-    "bench:local": "node --test tests/*.test.mjs"
+    "bench:local": "node --test tests/*.test.mjs",
+    "doctor": "node ./src/cli.ts doctor",
+    "bench": "node ./src/cli.ts bench",
+    "patterns": "node ./src/cli.ts patterns"
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": "*"
@@ -61,14 +64,16 @@
     "src",
     "extensions",
     "tests",
-    "docs/safety-model.md",
-    "docs/benchmarks.md",
-    "docs/demo.gif",
-    "docs/demo.mp4",
-    "docs/demo-preview.png",
-    "docs/demo.sh",
+    "docs",
+    "examples",
+    "validation",
     "README.md",
+    "CHANGELOG.md",
+    "SECURITY.md",
     "LICENSE",
     "tsconfig.json"
-  ]
+  ],
+  "bin": {
+    "pi-precognition": "./src/cli.ts"
+  }
 }

@@ -21,6 +21,8 @@ Validated tool futures for Pi coding agents. `pi-precognition` warms safe file, 
 
 It does not predict answers. In its default `silent-futures` mode it injects no hidden context. When tool-cache mode is on it transparently wraps Pi's `read`, `bash`, and `grep` tools — preserving their model-facing schemas and descriptions byte-for-byte — and adds a small `precognition_peek` diagnostic tool. The wait disappears; the model's tool contract does not change.
 
+→ **[Install](#install)** · **[Reproduce](challenges/003-reproduce-the-baseline.md)** · **[Build a future](docs/build-a-future.md)**
+
 ## The number
 
 On the slow-command workload (a `bash("npm test")` that takes 15 seconds, with 17s of draft budget), `pi-precognition` drops the blocked tool wait from **15.2 seconds to 29 milliseconds** — a **522× collapse** of the dominant latency cost.
@@ -45,6 +47,49 @@ Tool execution can dominate agent latency. PASTE ([arXiv:2603.18897](https://arx
 > `pi-precognition` speculates **while the operator is typing.**
 
 The two approaches compose. The package runs an allowlisted set of read-only commands (`npm test`, `npm run typecheck`, `git status`, `ls`, etc.) during operator-draft time to *warm* their results. It does **not** speculatively execute mutating actions, and it does **not** auto-decide which tool the model will call next. The model still drives every served tool call; we just had the result ready, fingerprint-validated, when it asked.
+
+
+## v0.3 — Personal Anticipation Engine
+
+v0.2 proved validated futures are safe. v0.3 makes them **personal, visible, and reactive**. It is — to our knowledge — the first public **operator-time** personal anticipation engine for coding agents: it learns your wait rhythm at the moment you draft, not after you ship.
+
+The emotional proof is the Pattern Library. After a few sessions, `patterns` reads like an honest model of your editing style:
+
+```
+Pattern Library · 2 patterns · your-project
+  totals: 3 hits / 8 armed · saved 32.7s
+- test-after-edit · count 3 · conf 0.59 · saved 24.3s · hit-rate 33% (2 of 6 hits) · pi_blitz:edit a3/h0/r0, bash:npm test a3/h2/r0
+  refs: src/cli.ts
+- build/typecheck-preflight · count 2 · conf 0.51 · saved 8.4s · hit-rate 50% (1 of 2 hits) · bash:npm run typecheck a2/h1/r0
+  refs: src/pattern-library.ts
+```
+
+That is the operator's personal model speaking back in plain English: *"two patterns, three hits across eight armings, 32.7s saved, the test-after-edit pattern converts one in three armings, the typecheck pattern hits half the time."*
+
+New in v0.3:
+
+- **Persistent Pattern Library** — per-project rhythm, ranked futures (`count·conf + hits·2 + saved/1000 − rejections`), hit/miss/rejection history, saved time. Stored at `.pi-precognition/patterns.json`. Survives cold-start; reads operator-English by default.
+- **Live mutation stream** — `watch` and `patterns --live` re-evaluate expensive futures on every file change and print human-readable rejection reasons (`rejected: bash:npm run lint — no scripts.lint in package.json`).
+- **pi-blitz future classes** — symbolic AST edit/batch/apply candidates are first-class learned futures, surfaced by name in `patterns` output.
+- **Future Compose API** — third-party packages register safe future classes in under 30 minutes. See [`examples/rust-cargo-check/`](examples/rust-cargo-check/) for a non-trivial worked example.
+- **Paired bench CLI** — `bench --paired` writes Markdown + raw JSON receipts to `validation/`. 30-sample evidence report at [`validation/v0.3-evidence-report.md`](validation/v0.3-evidence-report.md).
+
+```bash
+pi-precognition doctor
+pi-precognition patterns           # show the personal model
+pi-precognition patterns --live    # watch it react to your edits
+PI_PRECOG_COMMAND_FUTURES=1 pi-precognition bench --paired --workload all --iterations 5
+```
+
+### Why operator-time matters
+
+PASTE speculates *while the model thinks*. v0.3 speculates *while the operator types* AND learns which speculations actually paid off. The Pattern Library is the difference between a stateless cache and a personal model. The scope is narrow on purpose: this is not "AI that finishes your sentences," it is "a coding agent that learns what you usually wait on and pre-arms it safely, with receipts."
+
+The engine never speculatively mutates. Only deterministic safe-class futures are armed (test / typecheck / lint / build / read / git). Rejection is loud and reasoned.
+
+### v0.3 ties into self-evolving agents
+
+A coding agent that learns the operator's wait rhythm is one step closer to a coding agent that improves its own dispatch. v0.3 doesn't claim self-evolution. It ships the substrate: a persistent, ranked, operator-readable model of which futures matter, surfaced through a public Compose API so any future class — including the agent's own self-tooling — can plug in. The pi-blitz integration is the canonical demonstration.
 
 ## Install
 
@@ -161,6 +206,22 @@ Live-API benchmark replay is being extracted into a `pi-precognition bench` CLI 
 | `full` | Warmed file contents in a hidden custom message. | Bench/research |
 
 Every headline number is measured against `silent-futures`. The broader 15-paired mixed A/B in [`docs/benchmarks.md`](docs/benchmarks.md) was run with `full` injection mode and is labeled there as historical/diagnostic context.
+
+## Build a future
+
+The package is the proof. The community is the unlock.
+
+A **future class** declares a cache key, the command shapes the model might emit, a causal-file fingerprint, and an argv to run at warm time. Adding one for a new ecosystem (Cargo, Go, Maven, Bazel, ...) is ~30 lines and a fingerprint test.
+
+- **[docs/build-a-future.md](docs/build-a-future.md)** — anatomy of a future class, the 30-line template
+- **[examples/custom-future-class/](examples/custom-future-class/)** — worked example: `bash:cargo test`
+- **[challenges/leaderboard.md](challenges/leaderboard.md)** — open class slots and the receipts board
+- **[challenges/](challenges/)** — three open challenges:
+  1. Add a command class (Cargo / Go / Maven / Gradle / Bazel)
+  2. Find a safety bypass
+  3. Reproduce the 522× baseline
+
+> Build a future. Submit a receipt.
 
 ## Status
 

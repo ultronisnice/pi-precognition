@@ -1,0 +1,17 @@
+# No [tools] pin here: v0.3 gates must not trigger implicit tool installs without approval.
+
+[tasks."precog:dev"]
+description = "Fast local developer gate for pi-precognition edits."
+run = "npm test && npm run typecheck"
+
+[tasks."precog:release"]
+description = "Full local release-readiness gate without publishing."
+run = "npm test && npm run typecheck && node ./src/cli.ts doctor && node ./src/cli.ts patterns && node ./src/cli.ts watch --once && PI_PRECOG_COMMAND_FUTURES=1 PI_PRECOG_TOOL_CACHE=1 node ./src/cli.ts bench --paired --workload all --iterations 5 --out validation && npm pack --dry-run --json"
+
+[tasks."precog:affected"]
+description = "Changed-file validation; safe fallback is the full dev gate."
+run = "npm test && npm run typecheck"
+
+[tasks."precog:bench"]
+description = "Local paired benchmark gate for expensive futures."
+run = "PI_PRECOG_COMMAND_FUTURES=1 PI_PRECOG_TOOL_CACHE=1 node ./src/cli.ts bench --paired --workload all --iterations 5 --out validation"
